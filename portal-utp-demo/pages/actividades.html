@@ -1,0 +1,400 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Actividades 2026 - UTP Sede Ica</title>
+  <link rel="stylesheet" href="../css/main.css?v=20260722-4">
+  <link rel="stylesheet" href="../css/components.css?v=20260722-4">
+</head>
+<body>
+  <header class="site-header" id="site-header">
+    <div class="header-inner container">
+      <a href="../index.html" class="brand">
+        <div class="brand-logo"><span>UTP</span><span>ICA</span></div>
+        <div class="brand-text">
+          <span class="brand-name">Universidad Tecnológica del Perú</span>
+          <span class="brand-sub">Portal de Eventos - Sede Ica · 2026</span>
+        </div>
+      </a>
+      <nav class="main-nav">
+        <ul class="nav-list">
+          <li><a href="../index.html" class="nav-link">Inicio</a></li>
+          <li><a href="calendario.html" class="nav-link">Calendario</a></li>
+          <li><a href="actividades.html" class="nav-link active">Actividades</a></li>
+          <li><a href="inscripciones.html" class="nav-link">Inscripciones</a></li>
+          <li><a href="../index.html#ubicacion" class="nav-link">Ubicación</a></li>
+        </ul>
+      </nav>
+      <button class="nav-toggle" id="nav-toggle" aria-label="Menú">&#9776;</button>
+    </div>
+    <div class="mobile-menu" id="mobile-menu">
+      <ul class="mobile-nav-list">
+        <li><a href="../index.html" class="nav-link">Inicio</a></li>
+        <li><a href="calendario.html" class="nav-link">Calendario</a></li>
+        <li><a href="actividades.html" class="nav-link active">Actividades</a></li>
+        <li><a href="inscripciones.html" class="nav-link">Inscripciones</a></li>
+        <li><a href="../index.html#ubicacion" class="nav-link">Ubicación</a></li>
+      </ul>
+    </div>
+  </header>
+
+  <div style="background:var(--utp-black);padding:60px 0 0;position:relative;overflow:hidden;">
+    <div style="position:absolute;inset:0;background:url('https://images.unsplash.com/photo-1497366216548-37526070297c?w=1400&q=60') center/cover;opacity:0.40;"></div>
+    <div class="container" style="position:relative;z-index:1;padding-bottom:48px;">
+      <span class="section-tag" style="color:#ff6b77;">Portal UTP Ica 2026</span>
+      <h1 style="font-family:var(--font-display);font-style:italic;font-size:clamp(2rem,4vw,3rem);color:#fff;margin-top:8px;">Actividades <em style="color:var(--utp-red);font-style:normal;">UTP</em></h1>
+      <p style="color:rgba(255,255,255,0.6);margin-top:10px;">Todos los eventos programados para el semestre 2026</p>
+    </div>
+  </div>
+
+  <main>
+    <section class="section">
+      <div class="container">
+
+        <div class="activities-tools" data-reveal>
+          <label class="activity-search-label" for="activity-search">Buscar actividades</label>
+          <input class="activity-search" id="activity-search" type="search" placeholder="Nombre, lugar o descripción">
+          <select class="activity-sort" id="activity-sort" aria-label="Ordenar actividades">
+            <option value="date-asc">Fecha más próxima</option>
+            <option value="date-desc">Fecha más lejana</option>
+            <option value="name-asc">Nombre A-Z</option>
+          </select>
+          <div class="view-switch" aria-label="Cambiar vista">
+            <button class="view-btn active" type="button" data-view="cards">Tarjetas</button>
+            <button class="view-btn" type="button" data-view="table">Tabla</button>
+          </div>
+        </div>
+
+        <div class="activities-summary" id="activities-summary" data-reveal></div>
+
+        <div class="filter-group" data-reveal>
+          <p class="filter-label">Estado</p>
+          <div class="filter-bar filter-bar--compact" id="status-filters"></div>
+        </div>
+
+        <div class="filter-group category-filter-layer" data-reveal>
+          <p class="filter-label">Categoría</p>
+          <div class="filter-bar" id="category-filters"></div>
+        </div>
+
+        <div class="activities-cards" id="actividades-cards" data-reveal></div>
+
+        <div class="table-wrap" id="actividades-table-wrap" style="overflow-x:auto;" data-reveal hidden>
+          <table class="activities-table">
+            <thead>
+              <tr>
+                <th>Actividad</th>
+                <th>Categoría</th>
+                <th>Fecha</th>
+                <th>Lugar</th>
+                <th>Cupos</th>
+                <th>Estado</th>
+                <th>Acción</th>
+              </tr>
+            </thead>
+            <tbody id="actividades-tbody">
+              <!-- Renderizado dinámicamente por JS -->
+            </tbody>
+          </table>
+        </div>
+
+        <div id="empty-msg" style="display:none;text-align:center;padding:48px;color:#888;">
+          <div style="font-size:1rem;margin-bottom:12px;font-weight:700;">Sin resultados</div>
+          <p style="font-weight:600;">No hay actividades en esta categoría</p>
+        </div>
+
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="footer-bottom container" style="border-top:none;padding:28px 0;">
+      <p data-config="footer-copy">&copy; 2026 Universidad Tecnológica del Perú - Sede Ica</p>
+      <p><a href="https://www.utp.edu.pe" target="_blank" rel="noopener">www.utp.edu.pe</a></p>
+    </div>
+  </footer>
+
+  <script src="../js/app-version.js?v=20260722-4"></script>
+  <script src="../js/site-config.js?v=20260722-4"></script>
+  <script src="../js/events-data.js?v=20260722-4"></script>
+  <script src="../js/nav.js?v=20260722-4"></script>
+  <script src="../js/animations.js?v=20260722-4"></script>
+  <script>
+    /* ---- Renderizar actividades dinámicas desde localStorage ---- */
+    const CAT_BADGE_STYLE = {
+      academic: 'style="background:#e8edf7;color:#1a3a8c;"',
+      cultural: 'style="background:#f2e8f7;color:#6b1a8c;"',
+      sport:    'style="background:#e8f5ee;color:#1a6b40;"',
+      other:    'style="background:#f0f0f4;color:#555;"'
+    };
+    const EST_CSS_TABLE = {
+      open:   'badge--open',
+      full:   'badge--full',
+      closed: 'badge--closed',
+      ended:  'badge--ended'
+    };
+    const EST_LABEL_TABLE = { open:'Abierto', full:'Casi lleno', closed:'Cerrado', ended:'Culminado' };
+
+    let currentCategoryFilter = 'all';
+    let currentStatusFilter = 'all';
+    let currentView = 'cards';
+
+    const searchInput = document.getElementById('activity-search');
+    const sortSelect = document.getElementById('activity-sort');
+    const tbody = document.getElementById('actividades-tbody');
+    const cards = document.getElementById('actividades-cards');
+    const empty = document.getElementById('empty-msg');
+    const tableWrap = document.getElementById('actividades-table-wrap');
+
+    function getRegistrations() {
+      try {
+        return JSON.parse(localStorage.getItem('utp_inscripciones') || '[]');
+      } catch(e) {
+        return [];
+      }
+    }
+
+    function getEventRegistrations(title) {
+      return getRegistrations().filter(item => item.evento === title).length;
+    }
+
+    function getCapacityInfo(ev) {
+      const limit = parseInt(String(ev.cupos || '').replace(/\D/g, ''), 10);
+      const used = getEventRegistrations(ev.titulo);
+      if (!Number.isFinite(limit) || limit <= 0) {
+        return { used, limit: null, percent: 0, label: `${used} inscritos / Sin límite` };
+      }
+      const percent = Math.min(100, Math.round((used / limit) * 100));
+      return { used, limit, percent, label: `${used}/${limit} inscritos` };
+    }
+
+    function renderCapacity(ev) {
+      const cap = getCapacityInfo(ev);
+      const width = cap.limit ? cap.percent : 100;
+      const modifier = cap.limit && cap.percent >= 85 ? ' capacity-meter--hot' : '';
+      return `
+        <div class="capacity-meter${modifier}">
+          <div class="capacity-meter__top">
+            <span>Cupos</span>
+            <strong>${cap.label}</strong>
+          </div>
+          <div class="capacity-meter__track"><span style="width:${width}%"></span></div>
+        </div>`;
+    }
+
+    function getFilteredEvents() {
+      const term = (searchInput.value || '').toLowerCase().trim();
+      let events = getEvents().filter(ev => {
+        const status = getEffectiveEventStatus(ev);
+        const byCat = currentCategoryFilter === 'all' || ev.cat === currentCategoryFilter;
+        const byStatus = currentStatusFilter === 'all' || status === currentStatusFilter;
+        const text = `${ev.titulo} ${ev.lugar} ${ev.desc} ${CAT_LABEL[ev.cat] || ev.cat}`.toLowerCase();
+        return byCat && byStatus && (!term || text.includes(term));
+      });
+
+      events.sort((a, b) => {
+        if (sortSelect.value === 'date-desc') return new Date(b.fecha) - new Date(a.fecha);
+        if (sortSelect.value === 'name-asc') return a.titulo.localeCompare(b.titulo, 'es');
+        return new Date(a.fecha) - new Date(b.fecha);
+      });
+
+      return events;
+    }
+
+    function renderSummary() {
+      const events = getEvents();
+      const summary = document.getElementById('activities-summary');
+      const open = events.filter(e => getEffectiveEventStatus(e) === 'open').length;
+      const full = events.filter(e => getEffectiveEventStatus(e) === 'full').length;
+      const closed = events.filter(e => getEffectiveEventStatus(e) === 'closed').length;
+      const ended = events.filter(e => getEffectiveEventStatus(e) === 'ended').length;
+      summary.innerHTML = `
+        <div class="summary-card"><span class="summary-value">${events.length}</span><span class="summary-label">Eventos</span></div>
+        <div class="summary-card"><span class="summary-value">${open}</span><span class="summary-label">Abiertos</span></div>
+        <div class="summary-card"><span class="summary-value">${full}</span><span class="summary-label">Casi llenos</span></div>
+        <div class="summary-card"><span class="summary-value">${closed}</span><span class="summary-label">Cerrados</span></div>
+        <div class="summary-card"><span class="summary-value">${ended}</span><span class="summary-label">Culminados</span></div>
+      `;
+    }
+
+    function inscriptionLink(ev) {
+      return `inscripciones.html?evento=${encodeURIComponent(ev.titulo)}`;
+    }
+
+    function renderActividades() {
+      const filtered = getFilteredEvents();
+
+      if (!filtered.length) {
+        tbody.innerHTML = '';
+        cards.innerHTML = '';
+        empty.style.display = 'block';
+        return;
+      }
+      empty.style.display = 'none';
+
+      cards.innerHTML = filtered.map(ev => {
+        const img = resolveImg(ev.img, 1);
+        const status = getEffectiveEventStatus(ev);
+        const accion = status === 'closed' || status === 'ended'
+          ? `<span style="color:#888;font-size:0.85rem;">${status === 'ended' ? 'Evento culminado' : 'No disponible'}</span>`
+          : `<a href="${inscriptionLink(ev)}" class="event-cta">Inscribirse</a>`;
+        return `
+          <article class="activity-card">
+            <div class="activity-card-img">
+              <img src="${img}" alt="${ev.titulo}" loading="lazy" onerror="this.style.background='var(--border)'">
+            </div>
+            <div class="activity-card-body">
+              <span class="event-cat ${CAT_CLASS[ev.cat] || 'event-cat--other'}">${CAT_LABEL[ev.cat] || ev.cat}</span>
+              <h3 class="activity-card-title">${ev.titulo}</h3>
+              <p class="activity-card-desc">${ev.desc}</p>
+              <div class="activity-meta">
+                <span>Fecha: ${formatDate(ev.fecha)}</span>
+                <span>Lugar: ${ev.lugar}</span>
+              </div>
+              ${renderCapacity(ev)}
+            </div>
+            <div class="activity-card-footer">
+              <span class="badge ${EST_CSS_TABLE[status]}">${EST_LABEL_TABLE[status]}</span>
+              ${accion}
+            </div>
+          </article>`;
+      }).join('');
+
+      tbody.innerHTML = filtered.map(ev => {
+        const status = getEffectiveEventStatus(ev);
+        const accion = status === 'closed' || status === 'ended'
+          ? `<span style="color:#888;font-size:0.85rem;">${status === 'ended' ? 'Evento culminado' : 'No disponible'}</span>`
+          : `<a href="${inscriptionLink(ev)}" class="event-cta">Inscribirse</a>`;
+        return `
+          <tr data-category="${ev.cat}">
+            <td><strong>${ev.titulo}</strong></td>
+            <td><span class="badge" ${CAT_BADGE_STYLE[ev.cat] || CAT_BADGE_STYLE.other}>${CAT_LABEL[ev.cat] || ev.cat}</span></td>
+            <td>${formatDate(ev.fecha)}</td>
+            <td>${ev.lugar}</td>
+            <td>${getCapacityInfo(ev).label}</td>
+            <td><span class="badge ${EST_CSS_TABLE[status]}">${EST_LABEL_TABLE[status]}</span></td>
+            <td>${accion}</td>
+          </tr>`;
+      }).join('');
+    }
+
+    function setView(view) {
+      currentView = view;
+      cards.hidden = view !== 'cards';
+      tableWrap.hidden = view !== 'table';
+      document.querySelectorAll('.view-btn').forEach(btn => {
+        btn.classList.toggle('active', btn.dataset.view === view);
+      });
+    }
+
+    function renderStatusFilters() {
+      const filters = document.getElementById('status-filters');
+      filters.innerHTML = [
+        '<button class="filter-chip active" data-status="all">Todos</button>',
+        '<button class="filter-chip" data-status="open">Abiertos</button>',
+        '<button class="filter-chip" data-status="full">Casi llenos</button>',
+        '<button class="filter-chip" data-status="closed">Cerrados</button>',
+        '<button class="filter-chip" data-status="ended">Culminados</button>'
+      ].join('');
+    }
+
+    function renderCategoryFilters() {
+      const filters = document.getElementById('category-filters');
+      const categories = typeof getCategories === 'function' ? getCategories() : [];
+      const mainCategories = categories.filter(cat => ['academic', 'cultural', 'sport'].includes(cat.id));
+      filters.innerHTML = [
+        '<button class="filter-chip active" data-category="all">Todas</button>',
+        ...mainCategories.map(cat => `<button class="filter-chip" data-category="${cat.id}">${cat.icon || '•'} ${cat.label}</button>`)
+      ].join('');
+    }
+
+    function appendOtherCategoryMenu() {
+      const filters = document.getElementById('category-filters');
+      const categories = typeof getCategories === 'function' ? getCategories() : [];
+      const otherCategories = categories.filter(cat => cat.id === 'other' || !cat.locked);
+      filters.insertAdjacentHTML('beforeend', `
+        <div class="category-menu" id="other-category-menu">
+          <button class="filter-chip category-menu-toggle" type="button" id="other-category-toggle" aria-label="Abrir menú de otras categorías" aria-expanded="false" aria-controls="other-category-list">
+            <span class="hamburger-lines" aria-hidden="true"><span></span><span></span><span></span></span>
+            Otros
+          </button>
+          <div class="category-menu-list" id="other-category-list" role="menu">
+            <span class="category-menu-title">Categorías agregadas</span>
+            ${otherCategories.map(cat => `<button type="button" class="category-menu-item" data-category="${cat.id}" role="menuitem">${cat.icon || '•'} ${cat.label}</button>`).join('')}
+          </div>
+        </div>
+      `);
+    }
+
+    function bindCategoryFilters() {
+      const filters = document.getElementById('category-filters');
+      const chips = document.querySelectorAll('#category-filters .filter-chip');
+      const menu = document.getElementById('other-category-menu');
+      const toggle = document.getElementById('other-category-toggle');
+      const list = document.getElementById('other-category-list');
+
+      function setActiveCategory(category, activeButton) {
+        filters.querySelectorAll('.filter-chip, .category-menu-item').forEach(item => item.classList.remove('active'));
+        activeButton?.classList.add('active');
+        toggle?.classList.toggle('active', !!activeButton?.classList.contains('category-menu-item'));
+        currentCategoryFilter = category;
+        menu?.classList.remove('open');
+        toggle?.setAttribute('aria-expanded', 'false');
+        renderActividades();
+      }
+
+      chips.forEach(chip => {
+        chip.addEventListener('click', event => {
+          if (chip.id === 'other-category-toggle') {
+            event.stopPropagation();
+            const isOpen = !menu.classList.contains('open');
+            menu.classList.toggle('open', isOpen);
+            toggle.setAttribute('aria-expanded', String(isOpen));
+            return;
+          }
+          setActiveCategory(chip.dataset.category, chip);
+        });
+      });
+
+      list?.querySelectorAll('.category-menu-item').forEach(item => {
+        item.addEventListener('click', () => setActiveCategory(item.dataset.category, item));
+      });
+
+      document.addEventListener('click', event => {
+        if (menu && !menu.contains(event.target)) {
+          menu.classList.remove('open');
+          toggle?.setAttribute('aria-expanded', 'false');
+        }
+      });
+    }
+    function bindStatusFilters() {
+      const chips = document.querySelectorAll('#status-filters .filter-chip');
+      chips.forEach(chip => {
+      chip.addEventListener('click', () => {
+        chips.forEach(c => c.classList.remove('active'));
+        chip.classList.add('active');
+        currentStatusFilter = chip.dataset.status;
+        renderActividades();
+      });
+      });
+    }
+
+    searchInput.addEventListener('input', renderActividades);
+    sortSelect.addEventListener('change', renderActividades);
+    document.querySelectorAll('.view-btn').forEach(btn => {
+      btn.addEventListener('click', () => setView(btn.dataset.view));
+    });
+
+    /* ---- Init ---- */
+    renderStatusFilters();
+    renderCategoryFilters();
+    appendOtherCategoryMenu();
+    bindStatusFilters();
+    bindCategoryFilters();
+    renderSummary();
+    renderActividades();
+    setView(currentView);
+  </script>
+</body>
+</html>

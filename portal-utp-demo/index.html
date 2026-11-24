@@ -1,0 +1,414 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Portal de Eventos 2026 — UTP Sede Ica</title>
+  <link rel="stylesheet" href="css/main.css?v=20260722-4">
+  <link rel="stylesheet" href="css/components.css?v=20260722-4">
+</head>
+<body>
+  <a href="admin/login.html" class="admin-secret-link" title="Administrador" aria-label="Administrador"></a>
+
+   <header class="site-header" id="site-header">
+    <div class="header-inner container">
+      <a href="index.html" class="brand">
+        <div class="brand-logo"><span>UTP</span><span>ICA</span></div>
+        <div class="brand-text">
+          <span class="brand-name">Universidad Tecnológica del Perú</span>
+          <span class="brand-sub">Portal de Eventos — Sede Ica — 2026</span>
+        </div>
+      </a>
+      <nav class="main-nav" aria-label="Navegación principal">
+        <ul class="nav-list">
+          <li><a href="index.html" class="nav-link active">Inicio</a></li>
+          <li><a href="pages/calendario.html" class="nav-link">Calendario</a></li>
+          <li><a href="pages/actividades.html" class="nav-link">Actividades</a></li>
+          <li><a href="pages/inscripciones.html" class="nav-link">Inscripciones</a></li>
+          <li><a href="#ubicacion" class="nav-link">Ubicación</a></li>
+        </ul>
+      </nav>
+      <button class="nav-toggle" id="nav-toggle" aria-label="Menú" aria-expanded="false">&#9776;</button>
+    </div>
+    <div class="mobile-menu" id="mobile-menu">
+      <ul class="mobile-nav-list">
+        <li><a href="index.html" class="nav-link active">Inicio</a></li>
+        <li><a href="pages/calendario.html" class="nav-link">Calendario</a></li>
+        <li><a href="pages/actividades.html" class="nav-link">Actividades</a></li>
+        <li><a href="pages/inscripciones.html" class="nav-link">Inscripciones</a></li>
+        <li><a href="#ubicacion" class="nav-link">Ubicación</a></li>
+      </ul>
+    </div>
+  </header>
+
+   <section class="hero">
+    <div class="hero-img" id="hero-img"></div>
+    <div class="hero-overlay"></div>
+    <div class="hero-body">
+      <div class="container">
+        <div class="hero-content">
+          <div class="hero-eyebrow"> Comunidad UTP Ica — 2026</div>
+          <h1 class="hero-title">Vive la<br><em>experiencia</em><br>universitaria</h1>
+          <p class="hero-desc">Descubre, participa e inscríbete en los eventos académicos, culturales y deportivos de la UTP Sede Ica. Tu vida universitaria comienza aquí.</p>
+          <div class="hero-actions">
+            <a href="pages/calendario.html" class="btn btn-primary btn-lg">Ver Calendario 2026</a>
+            <a href="pages/actividades.html" class="btn btn-white">Explorar Actividades</a>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="hero-stats">
+      <div class="stat-item">
+        <span class="stat-num" data-count="48">0</span>
+        <span class="stat-lbl">Eventos este mes</span>
+      </div>
+      <div class="stat-item">
+        <span class="stat-num" data-count="30">0</span>
+        <span class="stat-lbl">Carreras en 7 facultades</span>
+      </div>
+      <div class="stat-item">
+        <span class="stat-num" data-count="3200">0</span>
+        <span class="stat-lbl">Estudiantes en Ica</span>
+      </div>
+    </div>
+  </section>
+
+  <main>
+     <section class="section" aria-labelledby="eventos-h">
+      <div class="container">
+        <div class="section-header" data-reveal>
+          <span class="section-tag">Próximos eventos</span>
+          <h2 id="eventos-h" class="section-title">Lo que viene en <em>UTP Ica</em></h2>
+          <p class="section-sub">Los eventos más importantes de la comunidad universitaria 2026</p>
+        </div> 
+             <div class="events-grid" id="home-events-grid">
+
+          <article class="event-card visible" data-reveal>
+            <div class="event-card-img">
+              <img src="img/academico1.png" alt="Congreso de Ingeniería" loading="lazy">
+              <div class="event-card-img-overlay"></div>
+              <div class="event-card-date-badge"><strong>10</strong>Jun</div>
+            </div>
+            <div class="event-card-body">
+              <span class="event-cat event-cat--academic">Académico</span>
+              <h3 class="event-card-title">Congreso de Ingeniería y Tecnología 2026</h3>
+              <p class="event-card-desc">Investigaciones, workshops y paneles con expertos del sector tecnológico nacional e internacional.</p>
+            </div>
+            <div class="event-card-footer">
+              <span class="event-location">&#128205; Auditorio UTP Ica</span>
+              <a href="pages/inscripciones.html" class="event-cta">Inscribirse</a>
+            </div>
+          </article>
+
+          <article class="event-card visible" data-reveal>
+            <div class="event-card-img">
+              <img src="img/cultural1.png" alt="Feria de Arte" loading="lazy">
+              <div class="event-card-img-overlay"></div>
+              <div class="event-card-date-badge"><strong>15</strong>Jun</div>
+            </div>
+            <div class="event-card-body">
+              <span class="event-cat event-cat--cultural">Cultural</span>
+              <h3 class="event-card-title">Feria de Arte y Expresión Universitaria</h3>
+              <p class="event-card-desc">Exposiciones, performances y talleres creativos a cargo de estudiantes de todas las carreras UTP.</p>
+            </div>
+            <div class="event-card-footer">
+              <span class="event-location">&#128205; Patio Central UTP</span>
+              <a href="pages/inscripciones.html" class="event-cta">Inscribirse</a>
+            </div>
+          </article>
+
+          <article class="event-card" data-reveal>
+            <div class="event-card-img">
+              <img src="img/deportivo1.png" alt="Olimpiadas Interfacultades" loading="lazy">
+              <div class="event-card-img-overlay"></div>
+              <div class="event-card-date-badge"><strong>20</strong>Jun</div>
+            </div>
+            <div class="event-card-body">
+              <span class="event-cat event-cat--sport">Deportivo</span>
+              <h3 class="event-card-title">Olimpiadas Interfacultades UTP 2026</h3>
+              <p class="event-card-desc">Fútbol, baloncesto y atletismo entre las distintas carreras. ¡Demuestra el espíritu UTP!</p>
+            </div>
+            <div class="event-card-footer">
+              <span class="event-location">&#128205; Cancha UTP Ica</span>
+              <a href="pages/inscripciones.html" class="event-cta">Inscribirse</a>
+            </div>
+          </article>
+
+          <article class="event-card" data-reveal>
+            <div class="event-card-img">
+              <img src="img/academico.png" alt="Orientación Vocacional" loading="lazy">
+              <div class="event-card-img-overlay"></div>
+              <div class="event-card-date-badge"><strong>02</strong>Jul</div>
+            </div>
+            <div class="event-card-body">
+              <span class="event-cat event-cat--academic">Académico</span>
+              <h3 class="event-card-title">Semana de Orientación Vocacional UTP</h3>
+              <p class="event-card-desc">Charlas y visitas a laboratorios para ingresantes. Conoce tu carrera de la mano de docentes expertos.</p>
+            </div>
+            <div class="event-card-footer">
+              <span class="event-location">&#128205; Aulas UTP Ica</span>
+              <a href="pages/inscripciones.html" class="event-cta">Inscribirse</a>
+            </div>
+          </article>
+
+          <article class="event-card" data-reveal>
+            <div class="event-card-img">
+              <img src="img/cultural.png" alt="Festival de Cine" loading="lazy">
+              <div class="event-card-img-overlay"></div>
+              <div class="event-card-date-badge"><strong>08</strong>Jul</div>
+            </div>
+            <div class="event-card-body">
+              <span class="event-cat event-cat--cultural">Cultural</span>
+              <h3 class="event-card-title">Festival de Cine Universitario</h3>
+              <p class="event-card-desc">Cortometrajes y proyecciones especiales realizados por estudiantes y cineastas invitados a Ica.</p>
+            </div>
+            <div class="event-card-footer">
+              <span class="event-location">&#128205; Auditorio UTP Ica</span>
+              <a href="pages/inscripciones.html" class="event-cta">Inscribirse</a>
+            </div>
+          </article>
+
+          <article class="event-card" data-reveal>
+            <div class="event-card-img">
+              <img src="https://images.unsplash.com/photo-1542751371-adc38448a05e?w=700&q=80" alt="Torneo de Videojuegos" loading="lazy">
+              <div class="event-card-img-overlay"></div>
+              <div class="event-card-date-badge"><strong>15</strong>Jul</div>
+            </div>
+            <div class="event-card-body">
+              <span class="event-cat event-cat--other">Otros</span>
+              <h3 class="event-card-title">Torneo de Videojuegos UTP 2026</h3>
+              <p class="event-card-desc">Competencia gamer con retos por equipos, partidas clasificatorias y premiación para la comunidad universitaria.</p>
+            </div>
+            <div class="event-card-footer">
+              <span class="event-location">&#128205; Laboratorio de Cómputo UTP Ica</span>
+              <a href="pages/inscripciones.html" class="event-cta">Inscribirse</a>
+            </div>
+          </article>          
+        </div>
+        <div class="section-footer">
+          <a href="pages/actividades.html" class="btn btn-outline">Ver todos los eventos 2026</a>
+        </div>
+      </div>
+    </section>
+
+     <section class="cta-band">
+      <div class="container cta-band-inner">
+        <div class="cta-band-text">
+          <h2>¿Listo para participar?</h2>
+          <p>Inscríbete en segundos desde cualquier dispositivo. Sin trámites, sin colas.</p>
+        </div>
+        <a href="pages/inscripciones.html" class="btn btn-white btn-lg">Inscribirme ahora &#8594;</a>
+      </div>
+    </section>
+
+     <section class="section" id="ubicacion" aria-labelledby="mapa-h">
+      <div class="container">
+        <div class="section-header" data-reveal>
+          <span class="section-tag">¿Dónde estamos?</span>
+          <h2 id="mapa-h" class="section-title">UTP Sede <em>Ica</em></h2>
+          <p class="section-sub"><span data-config="address">Av. Ayabaca s/n, Ica</span>, Perú — fácil de encontrar, difícil de olvidar</p>
+        </div>
+        <div class="location-grid" data-reveal>
+          <div class="map-frame">
+            <iframe
+              title="Mapa UTP Sede Ica"
+              src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3849.6!2d-75.7285!3d-14.0675!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x9110e04b8b8b8b8b%3A0xabcdef1234567890!2sUniversidad%20Tecnol%C3%B3gica%20del%20Per%C3%BA%20Sede%20Ica!5e0!3m2!1ses!2spe!4v1700000000000!5m2!1ses!2spe"
+              width="100%" height="420" style="border:0;display:block;"
+              allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade">
+            </iframe>
+          </div>
+          <div class="location-cards">
+            <div class="loc-card">
+              <div class="loc-icon">&#128205;</div>
+              <div>
+                <p class="loc-label">Dirección</p>
+                <p class="loc-val"><span data-config="address">Av. Ayabaca s/n, Ica</span><br>Departamento de Ica, Perú</p>
+              </div>
+            </div>
+            <div class="loc-card">
+              <div class="loc-icon">&#128222;</div>
+              <div>
+                <p class="loc-label">Teléfono</p>
+                <p class="loc-val"><span data-config="phone">(0801) 19610</span><br>WhatsApp: <span data-config="whatsapp">960 252 970</span></p>
+              </div>
+            </div>
+            <div class="loc-card">
+              <div class="loc-icon">&#128140;</div>
+              <div>
+                <p class="loc-label">Correo</p>
+                <p class="loc-val" data-config="email">eventos.ica@utp.edu.pe</p>
+              </div>
+            </div>
+            <div class="loc-card">
+              <div class="loc-icon">&#128339;</div>
+              <div>
+                <p class="loc-label">Horario de atención</p>
+                <p class="loc-val">Lun – Vier: 8:30 am – 6:30 pm<br>Sáb: 9:00 am - 1:00 pm</p>
+              </div>
+            </div>
+            <a href="https://maps.google.com/?q=UTP+Ica" target="_blank" rel="noopener" class="btn btn-primary" style="justify-content:center;">
+              &#127758; Cómo llegar
+            </a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+     <section class="section section--gray" aria-labelledby="social-h">
+      <div class="container">
+        <div class="section-header" data-reveal>
+          <span class="section-tag">Redes sociales</span>
+          <h2 id="social-h" class="section-title">Síguenos y mantente <em>conectado</em></h2>
+          <p class="section-sub">Noticias, eventos y contenido exclusivo de UTP Ica todos los días</p>
+        </div>
+        <div class="social-grid" data-reveal>
+          <a href="https://www.facebook.com/UTP.Peru" target="_blank" rel="noopener" class="soc-card soc-card--fb" data-config-link="facebook">
+            <div class="soc-icon">
+              <svg width="28" height="28" viewBox="0 0 24 24" fill="currentColor"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
+            </div>
+            <span class="soc-name">Facebook</span>
+            <span class="soc-handle">@UTP.Peru</span>
+            <span class="soc-followers">+801K seguidores</span>
+          </a>
+          <a href="https://www.instagram.com/universidadutp" target="_blank" rel="noopener" class="soc-card soc-card--ig" data-config-link="instagram">
+            <div class="soc-icon">
+              <svg width="28" height="28" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/></svg>
+            </div>
+            <span class="soc-name">Instagram</span>
+            <span class="soc-handle">@universidadutp</span>
+            <span class="soc-followers">135K seguidores</span>
+          </a>
+          <a href="https://www.youtube.com/@sorprendeteutp" target="_blank" rel="noopener" class="soc-card soc-card--yt">
+            <div class="soc-icon">
+              <svg width="28" height="28" viewBox="0 0 24 24" fill="currentColor"><path d="M23.498 6.186a3.016 3.016 0 00-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 00.502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 002.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 002.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>
+            </div>
+            <span class="soc-name">YouTube</span>
+            <span class="soc-handle">UTP Perú</span>
+            <span class="soc-followers">Videos y lives</span>
+          </a>
+          <a href="https://www.tiktok.com/@universidadutp" target="_blank" rel="noopener" class="soc-card soc-card--tt">
+            <div class="soc-icon">
+              <svg width="28" height="28" viewBox="0 0 24 24" fill="currentColor"><path d="M12.525.02c1.31-.02 2.61-.01 3.91-.02.08 1.53.63 3.09 1.75 4.17 1.12 1.11 2.7 1.62 4.24 1.79v4.03c-1.44-.05-2.89-.35-4.2-.97-.57-.26-1.1-.59-1.62-.93-.01 2.92.01 5.84-.02 8.75-.08 1.4-.54 2.79-1.35 3.94-1.31 1.92-3.58 3.17-5.91 3.21-1.43.08-2.86-.31-4.08-1.03-2.02-1.19-3.44-3.37-3.65-5.71-.02-.5-.03-1-.01-1.49.18-1.9 1.12-3.72 2.58-4.96 1.66-1.44 3.98-2.13 6.15-1.72.02 1.48-.04 2.96-.04 4.44-.99-.32-2.15-.23-3.02.37-.63.41-1.11 1.04-1.36 1.75-.21.51-.15 1.07-.14 1.61.24 1.64 1.82 3.02 3.5 2.87 1.12-.01 2.19-.66 2.77-1.61.19-.33.4-.67.41-1.06.1-1.79.06-3.57.07-5.36.01-4.03-.01-8.05.02-12.07z"/></svg>
+            </div>
+            <span class="soc-name">TikTok</span>
+            <span class="soc-handle">@utpperu</span>
+            <span class="soc-followers">Tendencias UTP</span>
+          </a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+   <footer class="site-footer">
+    <div class="footer-top">
+      <div class="container footer-grid">
+        <div>
+          <div class="footer-brand-logo"><span>UTP</span><span>ICA</span></div>
+          <p class="footer-desc">La Universidad Tecnológica del Perú — Sede Ica te conecta con las mejores oportunidades académicas, culturales y deportivas del departamento.</p>
+          <div class="footer-socials">
+            <a href="https://www.facebook.com/UTP.Peru" target="_blank" rel="noopener" class="ft-social" aria-label="Facebook" data-config-link="facebook">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
+            </a>
+            <a href="https://www.instagram.com/universidadutp" target="_blank" rel="noopener" class="ft-social" aria-label="Instagram" data-config-link="instagram">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/></svg>
+            </a>
+            <a href="https://www.youtube.com/@UTPPeru" target="_blank" rel="noopener" class="ft-social" aria-label="YouTube">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M23.498 6.186a3.016 3.016 0 00-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 00.502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 002.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 002.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>
+            </a>
+            <a href="https://www.tiktok.com/@utpperu" target="_blank" rel="noopener" class="ft-social" aria-label="TikTok">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M12.525.02c1.31-.02 2.61-.01 3.91-.02.08 1.53.63 3.09 1.75 4.17 1.12 1.11 2.7 1.62 4.24 1.79v4.03c-1.44-.05-2.89-.35-4.2-.97-.57-.26-1.1-.59-1.62-.93-.01 2.92.01 5.84-.02 8.75-.08 1.4-.54 2.79-1.35 3.94-1.31 1.92-3.58 3.17-5.91 3.21-1.43.08-2.86-.31-4.08-1.03-2.02-1.19-3.44-3.37-3.65-5.71-.02-.5-.03-1-.01-1.49.18-1.9 1.12-3.72 2.58-4.96 1.66-1.44 3.98-2.13 6.15-1.72.02 1.48-.04 2.96-.04 4.44-.99-.32-2.15-.23-3.02.37-.63.41-1.11 1.04-1.36 1.75-.21.51-.15 1.07-.14 1.61.24 1.64 1.82 3.02 3.5 2.87 1.12-.01 2.19-.66 2.77-1.61.19-.33.4-.67.41-1.06.1-1.79.06-3.57.07-5.36.01-4.03-.01-8.05.02-12.07z"/></svg>
+            </a>
+          </div>
+        </div>
+        <div class="footer-col">
+          <h4>Navegación</h4>
+          <ul>
+            <li><a href="index.html">Inicio</a></li>
+            <li><a href="pages/calendario.html">Calendario 2026</a></li>
+            <li><a href="pages/actividades.html">Actividades</a></li>
+            <li><a href="pages/inscripciones.html">Inscripciones</a></li>
+            <li><a href="#ubicacion">Ubicación</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h4>Contacto</h4>
+          <ul>
+            <li><a href="#" data-config="address">Av. Ayabaca s/n, Ica</a></li>
+            <li><a href="tel:080119610" data-config="phone" data-config-link="phone">(0801) 19610</a></li>
+            <li><a href="mailto:eventos.ica@utp.edu.pe" data-config="email" data-config-link="email">eventos.ica@utp.edu.pe</a></li>
+            <li><a href="https://www.utp.edu.pe" target="_blank" rel="noopener">www.utp.edu.pe</a></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div class="footer-bottom container">
+      <p data-config="footer-copy">&copy; 2026 Universidad Tecnológica del Perú — Sede Ica.</p>
+      <p>Parte del <a href="https://www.intercorp.com.pe" target="_blank" rel="noopener">Grupo Intercorp</a></p>
+    </div>
+  </footer>
+
+  <script src="js/app-version.js?v=20260722-4"></script>
+  <script src="js/site-config.js?v=20260722-4"></script>
+  <script src="js/events-data.js?v=20260722-4"></script>
+  <script src="js/nav.js?v=20260722-4"></script>
+  <script src="js/animations.js?v=20260722-4"></script>
+
+  <script>
+    /* Renderizar tarjetas de eventos desde localStorage */
+    (function renderHomeEvents() {
+      const events = getEvents();
+      const grid = document.getElementById('home-events-grid');
+      if (!grid) return;
+
+      function getProximityLabel(ev) {
+        const status = getEffectiveEventStatus(ev);
+        if (status === 'ended') return 'Evento culminado';
+        const today = new Date();
+        today.setHours(0, 0, 0, 0);
+        const eventDate = new Date(ev.fecha + 'T00:00:00');
+        const diffDays = Math.round((eventDate - today) / 86400000);
+        if (diffDays === 0) return 'Hoy se realiza';
+        if (diffDays === 1) return 'Falta 1 día';
+        if (diffDays > 1 && diffDays <= 30) return `Faltan ${diffDays} días`;
+        return formatDate(ev.fecha);
+      }
+
+      const destacados = events.filter(ev => ev.destacado === true);
+      const base = destacados.length ? destacados : events;
+      const show = base
+        .slice()
+        .sort((a, b) => (Number(a.prioridad || 99) - Number(b.prioridad || 99)) || new Date(a.fecha) - new Date(b.fecha))
+        .slice(0, 6);
+      grid.innerHTML = show.map(ev => {
+        const img   = resolveImg(ev.img, 0);
+        const bd    = badgeDate(ev.fecha);
+        const cat   = CAT_CLASS[ev.cat] || '';
+        const label = CAT_LABEL[ev.cat] || ev.cat;
+        const status = getEffectiveEventStatus(ev);
+        const action = status === 'ended' || status === 'closed'
+          ? `<span class="event-cta event-cta--disabled">${status === 'ended' ? 'Culminado' : 'No disponible'}</span>`
+          : `<a href="pages/inscripciones.html?evento=${encodeURIComponent(ev.titulo)}" class="event-cta">Inscribirse</a>`;
+        return `
+          <article class="event-card visible" data-reveal>
+            <div class="event-card-img">
+              <img src="${img}" alt="${ev.titulo}" loading="lazy" onerror="this.style.background='#ccc'">
+              <div class="event-card-img-overlay"></div>
+              <div class="event-priority-badge">Prioridad ${ev.prioridad || '-'}</div>
+              <div class="event-card-date-badge"><strong>${bd.day}</strong>${bd.month}</div>
+            </div>
+            <div class="event-card-body">
+              <span class="event-cat ${cat}">${label}</span>
+              <h3 class="event-card-title">${ev.titulo}</h3>
+              <div class="event-proximity">${getProximityLabel(ev)}</div>
+              <p class="event-card-desc">${ev.desc}</p>
+            </div>
+            <div class="event-card-footer">
+              <span class="event-location">&#128205; ${ev.lugar}</span>
+              ${action}
+            </div>
+          </article>`;
+      }).join('');
+    })();
+  </script>
+</body>
+</html>

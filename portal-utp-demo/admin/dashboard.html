@@ -1,0 +1,1549 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dashboard — Admin UTP Ica</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --red: #E30613; --red-dark: #A8000E; --red-light: #fff0f0;
+      --black: #111111; --dark: #1C1C1C;
+      --sidebar-w: 260px;
+      --bg: #F5F5F7; --white: #fff;
+      --border: #E2E2E8; --text: #111; --muted: #888; --text2: #444;
+      --green: #1a7a4a; --green-bg: #e8f5ee;
+      --yellow: #b56a00; --yellow-bg: #fff3e0;
+      --blue: #1a3a8c; --blue-bg: #e8edf7;
+      --purple: #6b1a8c; --purple-bg: #f2e8f7;
+      --font: 'Plus Jakarta Sans', sans-serif;
+      --sh: 0 2px 12px rgba(0,0,0,0.07);
+      --sh-md: 0 6px 24px rgba(0,0,0,0.10);
+      --r: 12px; --r-sm: 8px;
+      --ease: cubic-bezier(0.4,0,0.2,1);
+    }
+    body { font-family: var(--font); background: var(--bg); color: var(--text); display: flex; min-height: 100vh; overflow-x: hidden; }
+
+    /* === SIDEBAR === */
+    .sidebar {
+      width: var(--sidebar-w); background: var(--black);
+      display: flex; flex-direction: column;
+      position: fixed; top: 0; left: 0; bottom: 0; z-index: 100;
+      transition: transform 0.3s var(--ease);
+    }
+    .sidebar-brand {
+      padding: 24px 20px; border-bottom: 1px solid rgba(255,255,255,0.08);
+      display: flex; align-items: center; gap: 12px;
+    }
+    .s-logo {
+      width: 44px; height: 44px; background: #222;
+      border-left: 3px solid var(--red); border-radius: 6px;
+      display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 1px;
+      flex-shrink: 0;
+    }
+    .s-logo span:first-child { font-weight: 800; font-size: 0.85rem; color: #fff; letter-spacing: 0.04em; }
+    .s-logo span:last-child  { font-size: 0.42rem; color: var(--red); font-weight: 700; letter-spacing: 0.1em; }
+    .s-brand-text h2 { font-size: 0.88rem; font-weight: 800; color: #fff; line-height: 1.2; }
+    .s-brand-text p  { font-size: 0.68rem; color: rgba(255,255,255,0.4); margin-top: 2px; }
+
+    .sidebar-nav { flex: 1; padding: 16px 12px; overflow-y: auto; }
+    .nav-section-label {
+      font-size: 0.62rem; font-weight: 700; letter-spacing: 0.12em;
+      text-transform: uppercase; color: rgba(255,255,255,0.3);
+      padding: 0 8px; margin: 16px 0 6px;
+    }
+    .nav-item {
+      display: flex; align-items: center; gap: 10px;
+      padding: 10px 12px; border-radius: var(--r-sm);
+      color: rgba(255,255,255,0.6); font-size: 0.88rem; font-weight: 600;
+      cursor: pointer; transition: all 0.18s; text-decoration: none;
+      margin-bottom: 2px;
+    }
+    .nav-item:hover { background: rgba(255,255,255,0.07); color: #fff; }
+    .nav-item.active { background: var(--red); color: #fff; }
+    .nav-item .nav-icon { font-size: 1rem; width: 20px; text-align: center; }
+    .nav-badge {
+      margin-left: auto; background: var(--red); color: #fff;
+      font-size: 0.65rem; font-weight: 800; padding: 2px 7px;
+      border-radius: 20px; min-width: 20px; text-align: center;
+    }
+    .nav-item.active .nav-badge { background: rgba(255,255,255,0.25); }
+
+    .sidebar-footer {
+      padding: 16px 12px; border-top: 1px solid rgba(255,255,255,0.08);
+    }
+    .admin-info {
+      display: flex; align-items: center; gap: 10px;
+      padding: 10px 12px; border-radius: var(--r-sm);
+      background: rgba(255,255,255,0.05);
+    }
+    .admin-avatar {
+      width: 34px; height: 34px; border-radius: 50%;
+      background: var(--red); color: #fff;
+      display: flex; align-items: center; justify-content: center;
+      font-weight: 800; font-size: 0.9rem; flex-shrink: 0;
+    }
+    .admin-name { font-size: 0.82rem; font-weight: 700; color: #fff; }
+    .admin-role { font-size: 0.68rem; color: rgba(255,255,255,0.4); }
+    .btn-logout {
+      margin-left: auto; background: none; border: none;
+      color: rgba(255,255,255,0.4); cursor: pointer; font-size: 1rem;
+      padding: 4px; transition: color 0.18s;
+    }
+    .btn-logout:hover { color: var(--red); }
+
+    /* === MAIN === */
+    .main { margin-left: var(--sidebar-w); flex: 1; display: flex; flex-direction: column; min-height: 100vh; }
+
+    .topbar {
+      background: var(--white); border-bottom: 1px solid var(--border);
+      padding: 0 28px; height: 68px;
+      display: flex; align-items: center; justify-content: space-between;
+      position: sticky; top: 0; z-index: 50;
+      box-shadow: var(--sh);
+    }
+    .topbar-title { font-size: 1.1rem; font-weight: 800; color: var(--text); }
+    .topbar-right { display: flex; align-items: center; gap: 12px; }
+    .btn-view {
+      display: flex; align-items: center; gap: 6px;
+      padding: 8px 16px; border-radius: var(--r-sm);
+      background: var(--red); color: #fff; border: none;
+      font-family: var(--font); font-size: 0.82rem; font-weight: 700;
+      cursor: pointer; text-decoration: none; transition: background 0.18s;
+    }
+    .btn-view:hover { background: var(--red-dark); }
+    .menu-toggle {
+      display: none; background: none; border: 1.5px solid var(--border);
+      border-radius: var(--r-sm); width: 38px; height: 38px;
+      font-size: 1rem; cursor: pointer; align-items: center; justify-content: center;
+    }
+
+    .content { padding: 32px 28px; flex: 1; }
+
+    /* === PANELS === */
+    .panel { display: none; }
+    .panel.active { display: block; }
+
+    /* === STATS CARDS === */
+    .stats-grid { display: grid; grid-template-columns: repeat(4,1fr); gap: 18px; margin-bottom: 28px; }
+    .stat-card {
+      background: var(--white); border-radius: var(--r);
+      padding: 22px 20px; box-shadow: var(--sh);
+      border: 1px solid var(--border); position: relative; overflow: hidden;
+    }
+    .stat-card::after {
+      content: ''; position: absolute; bottom: 0; left: 0; right: 0;
+      height: 3px; background: var(--card-color, var(--red));
+    }
+    .stat-label { font-size: 0.72rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.07em; color: var(--muted); margin-bottom: 8px; }
+    .stat-value { font-size: 2rem; font-weight: 800; color: var(--text); line-height: 1; }
+    .stat-sub { font-size: 0.75rem; color: var(--muted); margin-top: 6px; }
+    .stat-icon { position: absolute; top: 18px; right: 18px; font-size: 1.6rem; opacity: 0.15; }
+
+    /* === CARDS SECTION === */
+    .section-card {
+      background: var(--white); border-radius: var(--r);
+      box-shadow: var(--sh); border: 1px solid var(--border);
+      margin-bottom: 24px; overflow: hidden;
+    }
+    .card-header {
+      padding: 18px 22px; border-bottom: 1px solid var(--border);
+      display: flex; align-items: center; justify-content: space-between;
+    }
+    .card-title { font-size: 1rem; font-weight: 800; color: var(--text); }
+    .card-body { padding: 22px; }
+
+    /* === BUTTONS === */
+    .btn { display: inline-flex; align-items: center; gap: 6px; padding: 9px 18px; border-radius: var(--r-sm); font-family: var(--font); font-weight: 700; font-size: 0.82rem; cursor: pointer; border: none; transition: all 0.18s; }
+    .btn-red { background: var(--red); color: #fff; }
+    .btn-red:hover { background: var(--red-dark); }
+    .btn-dark { background: var(--black); color: #fff; }
+    .btn-dark:hover { background: #333; }
+    .btn-ghost { background: var(--bg); color: var(--text2); border: 1.5px solid var(--border); }
+    .btn-ghost:hover { background: var(--border); }
+    .btn-sm { padding: 6px 12px; font-size: 0.75rem; }
+    .btn-danger { background: #fff5f5; color: #c53030; border: 1px solid #feb2b2; }
+    .btn-danger:hover { background: #c53030; color: #fff; }
+
+    /* === TABLE === */
+    .admin-table { width: 100%; min-width: 860px; border-collapse: collapse; }
+    .admin-table th {
+      padding: 12px 16px; font-size: 0.72rem; font-weight: 700;
+      text-transform: uppercase; letter-spacing: 0.07em;
+      background: var(--bg); color: var(--muted); text-align: left;
+      border-bottom: 1px solid var(--border);
+    }
+    .admin-table th:first-child { border-left: 3px solid var(--red); }
+    .admin-table td {
+      padding: 13px 16px; font-size: 0.88rem; color: var(--text2);
+      border-bottom: 1px solid var(--border); vertical-align: middle;
+    }
+    .admin-table tr:last-child td { border-bottom: none; }
+    .admin-table tr:hover td { background: #fafafa; }
+    .admin-table td strong { color: var(--text); font-weight: 700; }
+
+    .badge { display: inline-block; padding: 3px 10px; border-radius: 20px; font-size: 0.7rem; font-weight: 700; letter-spacing: 0.04em; }
+    .badge-green  { background: var(--green-bg); color: var(--green); }
+    .badge-yellow { background: var(--yellow-bg); color: var(--yellow); }
+    .badge-blue   { background: var(--blue-bg); color: var(--blue); }
+    .badge-purple { background: var(--purple-bg); color: var(--purple); }
+    .badge-red    { background: var(--red-light); color: var(--red); }
+    .badge-gray   { background: #f0f0f0; color: #666; }
+
+    /* === FORM === */
+    .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+    .form-group { display: flex; flex-direction: column; gap: 5px; margin-bottom: 16px; }
+    .form-group.full { grid-column: 1 / -1; }
+    .form-group label { font-size: 0.78rem; font-weight: 700; color: var(--text2); }
+    .form-group input,
+    .form-group select,
+    .form-group textarea {
+      padding: 10px 14px; border: 1.5px solid var(--border);
+      border-radius: var(--r-sm); font-family: var(--font);
+      font-size: 0.9rem; color: var(--text); background: var(--bg);
+      outline: none; transition: border-color 0.18s, box-shadow 0.18s;
+    }
+    .form-group input:focus,
+    .form-group select:focus,
+    .form-group textarea:focus {
+      border-color: var(--red); background: var(--white);
+      box-shadow: 0 0 0 3px rgba(227,6,19,0.08);
+    }
+    .form-group textarea { resize: vertical; min-height: 80px; }
+    .form-actions { display: flex; gap: 10px; margin-top: 8px; flex-wrap: wrap; }
+    .inline-field-action { display: flex; gap: 8px; }
+    .inline-field-action input { min-width: 0; }
+    .category-admin-box {
+      border: 1px solid var(--border);
+      border-radius: var(--r-sm);
+      background: var(--bg);
+      overflow: hidden;
+    }
+    .category-admin-table { width: 100%; border-collapse: collapse; }
+    .category-admin-table th,
+    .category-admin-table td {
+      padding: 10px 12px;
+      border-bottom: 1px solid var(--border);
+      font-size: 0.82rem;
+      text-align: left;
+    }
+    .category-admin-table th {
+      color: var(--muted);
+      font-size: 0.68rem;
+      font-weight: 800;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      background: var(--white);
+    }
+    .category-admin-table tr:last-child td { border-bottom: none; }
+    .category-admin-table td strong { color: var(--text); }
+    .category-empty {
+      padding: 14px;
+      color: var(--muted);
+      font-size: 0.84rem;
+      font-weight: 600;
+      text-align: center;
+    }
+
+    /* === IMAGE PREVIEW === */
+    .img-preview-box {
+      width: 100%; height: 140px; border-radius: var(--r-sm);
+      border: 2px dashed var(--border); background: var(--bg);
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      gap: 8px; cursor: pointer; transition: border-color 0.18s;
+      overflow: hidden; position: relative;
+    }
+    .img-preview-box:hover { border-color: var(--red); }
+    .img-preview-box img { width: 100%; height: 100%; object-fit: cover; }
+    .img-preview-box .placeholder { font-size: 2rem; opacity: 0.3; }
+    .img-preview-box p { font-size: 0.75rem; color: var(--muted); }
+
+    .date-warning {
+      display: none; margin-top: 8px; padding: 10px 12px;
+      border-radius: var(--r-sm); background: #fff3e0; color: #9a5a00;
+      border: 1px solid #ffd59b; font-size: 0.78rem; font-weight: 700;
+    }
+    .date-warning.visible { display: block; }
+    .event-preview-card {
+      display: grid; grid-template-columns: 150px 1fr; gap: 14px;
+      border: 1px solid var(--border); background: var(--bg);
+      border-radius: var(--r); overflow: hidden;
+    }
+    .event-preview-card img {
+      width: 100%; height: 100%; min-height: 142px; object-fit: cover;
+      background: var(--border);
+    }
+    .event-preview-body { padding: 14px; display: grid; gap: 8px; }
+    .event-preview-title { font-size: 0.98rem; font-weight: 800; color: var(--text); }
+    .event-preview-desc { font-size: 0.78rem; color: var(--text2); line-height: 1.45; }
+    .event-preview-meta { color: var(--muted); font-size: 0.74rem; display: grid; gap: 3px; }
+    .capacity-meter { display: grid; gap: 7px; min-width: 130px; }
+    .capacity-meter__top {
+      display: flex; justify-content: space-between; gap: 10px;
+      color: var(--muted); font-size: 0.72rem;
+    }
+    .capacity-meter__top strong { color: var(--text); text-align: right; }
+    .capacity-meter__track {
+      height: 8px; background: #ececf1; border-radius: 999px;
+      overflow: hidden; border: 1px solid var(--border);
+    }
+    .capacity-meter__track span {
+      display: block; height: 100%; min-width: 6px;
+      background: linear-gradient(90deg, var(--red), #ff6b77);
+      border-radius: inherit;
+    }
+    .capacity-meter--hot .capacity-meter__track span { background: #b56a00; }
+
+    /* === MODAL === */
+    .modal-overlay {
+      position: fixed; inset: 0; background: rgba(0,0,0,0.5);
+      z-index: 200; display: none; align-items: center; justify-content: center;
+      backdrop-filter: blur(4px);
+    }
+    .modal-overlay.open { display: flex; }
+    .modal {
+      background: var(--white); border-radius: 16px;
+      width: 90%; max-width: 620px; max-height: 90vh;
+      overflow-y: auto; box-shadow: 0 32px 80px rgba(0,0,0,0.25);
+      animation: modalIn 0.25s var(--ease);
+    }
+    @keyframes modalIn { from { opacity:0; transform: scale(0.95) translateY(10px); } to { opacity:1; transform: none; } }
+    .modal-header {
+      padding: 20px 24px; border-bottom: 1px solid var(--border);
+      display: flex; align-items: center; justify-content: space-between;
+      position: sticky; top: 0; background: var(--white); z-index: 1;
+    }
+    .modal-title { font-size: 1rem; font-weight: 800; }
+    .modal-close { background: none; border: none; font-size: 1.3rem; cursor: pointer; color: var(--muted); padding: 4px; }
+    .modal-close:hover { color: var(--red); }
+    .modal-body { padding: 24px; }
+
+    /* === TOAST === */
+    .toast {
+      position: fixed; bottom: 24px; right: 24px; z-index: 999;
+      background: var(--black); color: #fff;
+      padding: 14px 20px; border-radius: var(--r);
+      font-size: 0.88rem; font-weight: 600;
+      box-shadow: 0 8px 32px rgba(0,0,0,0.3);
+      display: flex; align-items: center; gap: 10px;
+      transform: translateY(100px); opacity: 0;
+      transition: all 0.3s var(--ease);
+    }
+    .toast.show { transform: translateY(0); opacity: 1; }
+    .toast.success { border-left: 4px solid #1a7a4a; }
+    .toast.error   { border-left: 4px solid var(--red); }
+
+    /* === EVENT CARD PREVIEW === */
+    .event-mini-card {
+      display: flex; gap: 14px; align-items: center;
+      padding: 12px; border-radius: var(--r-sm);
+      border: 1px solid var(--border); background: var(--bg);
+      margin-bottom: 10px;
+    }
+    .event-mini-img { width: 60px; height: 60px; border-radius: 8px; object-fit: cover; flex-shrink: 0; background: var(--border); }
+    .event-mini-info { flex: 1; }
+    .event-mini-title { font-weight: 700; font-size: 0.88rem; color: var(--text); }
+    .event-mini-meta  { font-size: 0.75rem; color: var(--muted); margin-top: 3px; }
+    .event-mini-actions { display: flex; gap: 6px; flex-shrink: 0; }
+
+    /* === INSCRIPCIÓN DETAIL === */
+    .insc-detail {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 10px;
+    }
+    .insc-field { background: var(--bg); border-radius: var(--r-sm); padding: 10px 14px; }
+    .insc-field label { font-size: 0.68rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; color: var(--muted); display: block; margin-bottom: 3px; }
+    .insc-field span { font-size: 0.88rem; color: var(--text); font-weight: 600; }
+
+    /* === RESPONSIVE === */
+    @media (max-width: 900px) {
+      body { display: block; }
+      .sidebar {
+        width: min(82vw, 300px);
+        transform: translateX(-100%);
+        box-shadow: 20px 0 60px rgba(0,0,0,0.24);
+      }
+      .sidebar.open { transform: translateX(0); }
+      .main { margin-left: 0; width: 100%; min-width: 0; }
+      .menu-toggle { display: flex; }
+      .stats-grid { grid-template-columns: repeat(2,1fr); }
+      .form-grid { grid-template-columns: 1fr; }
+      .topbar { padding: 0 18px; }
+      .topbar-title { font-size: 1rem; }
+      .btn-view { padding: 8px 12px; font-size: 0.78rem; }
+      .card-header { align-items: flex-start; flex-direction: column; gap: 12px; }
+      .event-mini-card { align-items: flex-start; }
+      .event-mini-actions { flex-direction: column; }
+      .event-preview-card { grid-template-columns: 1fr; }
+      .event-preview-card img { height: 170px; min-height: 170px; }
+      .modal { width: calc(100% - 28px); max-height: 86vh; }
+      .inline-field-action { flex-direction: column; }
+      .inline-field-action .btn { justify-content: center; }
+      .admin-table { min-width: 760px; }
+    }
+    @media (max-width: 700px) {
+      .admin-table {
+        min-width: 0; width: 100%; border-collapse: separate;
+        border-spacing: 0 12px;
+      }
+      .admin-table thead { display: none; }
+      .admin-table,
+      .admin-table tbody,
+      .admin-table tr,
+      .admin-table td { display: block; }
+      .admin-table tr {
+        background: var(--white); border: 1px solid var(--border);
+        border-radius: var(--r); box-shadow: var(--sh);
+        overflow: hidden; padding: 10px 12px;
+      }
+      .admin-table td {
+        display: grid; grid-template-columns: 112px 1fr; gap: 10px;
+        align-items: center; border-bottom: 1px solid var(--border);
+        padding: 10px 0; font-size: 0.84rem;
+      }
+      .admin-table td:last-child { border-bottom: none; }
+      .admin-table td::before {
+        content: attr(data-label); color: var(--muted);
+        font-size: 0.68rem; font-weight: 800; letter-spacing: 0.06em;
+        text-transform: uppercase;
+      }
+      .admin-table td[data-label="Imagen"] {
+        grid-template-columns: 1fr; padding-top: 0;
+      }
+      .admin-table td[data-label="Imagen"]::before { display: none; }
+      .admin-table td[data-label="Imagen"] img {
+        width: 100% !important; height: 150px !important;
+      }
+      .admin-table td[data-label="Acciones"] > div,
+      .admin-table td[data-label="Acción"] > div {
+        display: grid !important; grid-template-columns: 1fr 1fr;
+      }
+      .admin-table td[data-label="Acciones"] .btn,
+      .admin-table td[data-label="Acción"] .btn {
+        justify-content: center; width: 100%;
+      }
+      .capacity-meter { min-width: 0; }
+    }
+    @media (max-width: 500px) {
+      .stats-grid { grid-template-columns: 1fr; }
+      .content { padding: 20px 16px; }
+      .topbar { height: auto; min-height: 62px; padding: 10px 14px; gap: 10px; }
+      .topbar-right { display: none; }
+      .topbar-title {
+        max-width: calc(100vw - 92px);
+        overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+      }
+      .section-card { border-radius: 10px; }
+      .card-body { padding: 16px; }
+      .card-header { padding: 16px; }
+      .event-mini-card { flex-direction: column; }
+      .event-mini-img { width: 100%; height: 150px; }
+      .event-mini-actions { width: 100%; flex-direction: row; }
+      .event-mini-actions .btn { flex: 1; justify-content: center; }
+      .modal-body { padding: 18px; }
+      .form-actions .btn { width: 100%; justify-content: center; }
+      .toast { left: 14px; right: 14px; bottom: 14px; }
+      .insc-detail { grid-template-columns: 1fr; }
+      .admin-table td { grid-template-columns: 1fr; gap: 4px; }
+      .inline-field-action { width: 100%; }
+      .inline-field-action .btn,
+      .card-header > .btn { width: 100%; justify-content: center; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- SIDEBAR -->
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-brand">
+      <div class="s-logo"><span>UTP</span><span>ICA</span></div>
+      <div class="s-brand-text">
+        <h2>Panel Admin</h2>
+        <p>Portal de Eventos 2026</p>
+      </div>
+    </div>
+
+    <nav class="sidebar-nav">
+      <div class="nav-section-label">Principal</div>
+      <a class="nav-item active" onclick="showPanel('dashboard')">
+        <span class="nav-icon">📊</span> Dashboard
+      </a>
+
+      <div class="nav-section-label">Gestión</div>
+      <a class="nav-item" onclick="showPanel('eventos')">
+        <span class="nav-icon">📅</span> Eventos
+        <span class="nav-badge" id="badge-eventos">6</span>
+      </a>
+      <a class="nav-item" onclick="showPanel('inscripciones')">
+        <span class="nav-icon">📋</span> Inscripciones
+        <span class="nav-badge" id="badge-inscripciones">0</span>
+      </a>
+      <a class="nav-item" onclick="showPanel('galeria')">
+        <span class="nav-icon">🖼️</span> Galería / Imágenes
+      </a>
+
+      <div class="nav-section-label">Configuración</div>
+      <a class="nav-item" onclick="showPanel('configuracion')">
+        <span class="nav-icon">⚙️</span> Configuración
+      </a>
+    </nav>
+
+    <div class="sidebar-footer">
+      <div class="admin-info">
+        <div class="admin-avatar">A</div>
+        <div>
+          <div class="admin-name">Administrador</div>
+          <div class="admin-role">UTP Sede Ica</div>
+        </div>
+        <button class="btn-logout" onclick="logout()" title="Cerrar sesión">⏻</button>
+      </div>
+    </div>
+  </aside>
+
+  <!-- MAIN -->
+  <div class="main">
+    <!-- TOPBAR -->
+    <header class="topbar">
+      <div style="display:flex;align-items:center;gap:14px;">
+        <button class="menu-toggle" id="menu-toggle">&#9776;</button>
+        <span class="topbar-title" id="topbar-title">Dashboard</span>
+      </div>
+      <div class="topbar-right">
+        <a href="../index.html" target="_blank" class="btn-view">🌐 Ver portal</a>
+      </div>
+    </header>
+
+    <div class="content">
+
+      <!-- ===== PANEL: DASHBOARD ===== -->
+      <div class="panel active" id="panel-dashboard">
+        <div class="stats-grid">
+          <div class="stat-card" style="--card-color:#E30613;">
+            <div class="stat-label">Total Eventos</div>
+            <div class="stat-value" id="dash-total">6</div>
+            <div class="stat-sub">Activos en el portal</div>
+            <div class="stat-icon">📅</div>
+          </div>
+          <div class="stat-card" style="--card-color:#1a7a4a;">
+            <div class="stat-label">Inscripciones</div>
+            <div class="stat-value" id="dash-inscripciones">0</div>
+            <div class="stat-sub">Registros totales</div>
+            <div class="stat-icon">📋</div>
+          </div>
+          <div class="stat-card" style="--card-color:#1a3a8c;">
+            <div class="stat-label">Académicos</div>
+            <div class="stat-value" id="dash-academic">2</div>
+            <div class="stat-sub">Eventos académicos</div>
+            <div class="stat-icon">🎓</div>
+          </div>
+          <div class="stat-card" style="--card-color:#6b1a8c;">
+            <div class="stat-label">Culturales / Dep.</div>
+            <div class="stat-value" id="dash-otros">4</div>
+            <div class="stat-sub">Culturales y deportivos</div>
+            <div class="stat-icon">🏆</div>
+          </div>
+        </div>
+
+        <!-- Accesos rápidos -->
+        <div class="section-card">
+          <div class="card-header">
+            <span class="card-title">⚡ Accesos rápidos</span>
+          </div>
+          <div class="card-body" style="display:flex;gap:12px;flex-wrap:wrap;">
+            <button class="btn btn-red" onclick="showPanel('eventos');openModal()">➕ Nuevo Evento</button>
+            <button class="btn btn-dark" onclick="showPanel('inscripciones')">📋 Ver Inscripciones</button>
+            <button class="btn btn-ghost" onclick="showPanel('galeria')">🖼️ Gestionar Imágenes</button>
+            <button class="btn btn-ghost" onclick="showPanel('configuracion')">⚙️ Configuración</button>
+          </div>
+        </div>
+
+        <!-- Últimos eventos -->
+        <div class="section-card">
+          <div class="card-header">
+            <span class="card-title">📅 Eventos registrados</span>
+          </div>
+          <div class="card-body" id="dash-eventos-list"></div>
+        </div>
+      </div>
+
+      <!-- ===== PANEL: EVENTOS ===== -->
+      <div class="panel" id="panel-eventos">
+        <div class="section-card">
+          <div class="card-header">
+            <span class="card-title">📅 Gestión de Eventos</span>
+            <button class="btn btn-red" onclick="openModal()">➕ Nuevo evento</button>
+          </div>
+          <div class="card-body">
+            <div style="overflow-x:auto;">
+              <table class="admin-table" id="eventos-table">
+                <thead>
+                  <tr>
+                    <th>Imagen</th>
+                    <th>Evento</th>
+                    <th>Categoría</th>
+                    <th>Fecha</th>
+                    <th>Lugar</th>
+                    <th>Cupos</th>
+                    <th>Portada</th>
+                    <th>Estado</th>
+                    <th>Acciones</th>
+                  </tr>
+                </thead>
+                <tbody id="eventos-tbody"></tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ===== PANEL: INSCRIPCIONES ===== -->
+      <div class="panel" id="panel-inscripciones">
+        <div class="section-card">
+          <div class="card-header">
+            <span class="card-title">📋 Inscripciones recibidas</span>
+            <div class="inline-field-action">
+              <button class="btn btn-ghost btn-sm" onclick="renderInscripciones()">Actualizar</button>
+              <button class="btn btn-danger btn-sm" onclick="clearInscripciones()">🗑️ Limpiar todo</button>
+            </div>
+          </div>
+          <div class="card-body">
+            <div id="inscripciones-empty" style="text-align:center;padding:48px 0;color:var(--muted);">
+              <div style="font-size:3rem;margin-bottom:12px;">📭</div>
+              <p style="font-weight:600;">Aún no hay inscripciones registradas</p>
+              <p style="font-size:0.85rem;margin-top:6px;">Cuando los estudiantes se inscriban aparecerán aquí</p>
+            </div>
+            <div style="overflow-x:auto;display:none;" id="inscripciones-table-wrap">
+              <table class="admin-table">
+                <thead>
+                  <tr>
+                    <th>#</th><th>Nombre</th><th>Correo</th>
+                    <th>Código</th><th>Facultad</th><th>Ciclo</th>
+                    <th>Evento</th><th>Fecha reg.</th><th>Acción</th>
+                  </tr>
+                </thead>
+                <tbody id="inscripciones-tbody"></tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ===== PANEL: GALERÍA ===== -->
+      <div class="panel" id="panel-galeria">
+        <div class="section-card">
+          <div class="card-header">
+            <span class="card-title">🖼️ Imágenes del portal</span>
+          </div>
+          <div class="card-body">
+            <p style="font-size:0.88rem;color:var(--muted);margin-bottom:20px;">
+              Haz clic en cualquier imagen para cambiarla. Puedes usar una URL de imagen externa o subir una local.
+            </p>
+            <div id="galeria-grid" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:16px;"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ===== PANEL: CONFIGURACIÓN ===== -->
+      <div class="panel" id="panel-configuracion">
+        <div class="section-card">
+          <div class="card-header"><span class="card-title">⚙️ Configuración del portal</span></div>
+          <div class="card-body">
+            <div class="form-grid">
+              <div class="form-group">
+                <label>Nombre del portal</label>
+                <input type="text" id="cfg-nombre" value="Portal de Eventos — UTP Sede Ica">
+              </div>
+              <div class="form-group">
+                <label>Año activo</label>
+                <input type="number" id="cfg-ano" value="2026">
+              </div>
+              <div class="form-group">
+                <label>Correo de contacto</label>
+                <input type="email" id="cfg-email" value="eventos.ica@utp.edu.pe">
+              </div>
+              <div class="form-group">
+                <label>Teléfono</label>
+                <input type="text" id="cfg-tel" value="(0801) 19610">
+              </div>
+              <div class="form-group">
+                <label>WhatsApp</label>
+                <input type="text" id="cfg-wa" value="960 252 970">
+              </div>
+              <div class="form-group">
+                <label>Dirección</label>
+                <input type="text" id="cfg-dir" value="Av. Ayabaca s/n, Ica">
+              </div>
+              <div class="form-group full">
+                <label>Facebook URL</label>
+                <input type="text" id="cfg-fb" value="https://www.facebook.com/UTP.Peru">
+              </div>
+              <div class="form-group full">
+                <label>Instagram URL</label>
+                <input type="text" id="cfg-ig" value="https://www.instagram.com/universidadutp">
+              </div>
+              <div class="form-group full">
+                <label>Cambiar contraseña admin</label>
+                <input type="password" id="cfg-pass" placeholder="Nueva contraseña">
+              </div>
+            </div>
+            <div class="form-actions">
+              <button class="btn btn-red" onclick="saveConfig()">💾 Guardar cambios</button>
+              <button class="btn btn-ghost" onclick="resetConfig()">↩️ Restablecer</button>
+            </div>
+            <div class="form-group full" style="margin-top:22px;">
+              <label>Categorías del portal</label>
+              <div id="config-categories-list" class="category-admin-box"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div><!-- /content -->
+  </div><!-- /main -->
+
+  <!-- MODAL EVENTO -->
+  <div class="modal-overlay" id="modal-overlay">
+    <div class="modal">
+      <div class="modal-header">
+        <span class="modal-title" id="modal-title">Nuevo Evento</span>
+        <button class="modal-close" onclick="closeModal()">✕</button>
+      </div>
+      <div class="modal-body">
+        <input type="hidden" id="edit-index" value="-1">
+        <div class="form-grid">
+          <div class="form-group full">
+            <label>Título del evento *</label>
+            <input type="text" id="ev-titulo" placeholder="Ej: Congreso de Ingeniería 2026">
+          </div>
+          <div class="form-group">
+            <label>Categoría *</label>
+            <select id="ev-cat"></select>
+          </div>
+          <div class="form-group">
+            <label>Agregar nueva categoría</label>
+            <div class="inline-field-action">
+              <input type="text" id="new-cat-name" placeholder="Ej: Tecnología">
+              <button type="button" class="btn btn-ghost btn-sm" onclick="addCategoryFromModal()">Agregar</button>
+            </div>
+          </div>
+          <div class="form-group full">
+            <label>Categorías del portal</label>
+            <div id="modal-categories-list" class="category-admin-box"></div>
+          </div>
+          <div class="form-group">
+            <label>Estado</label>
+            <select id="ev-estado">
+              <option value="open">Abierto</option>
+              <option value="full">Casi lleno</option>
+              <option value="closed">Cerrado</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Fecha *</label>
+            <input type="date" id="ev-fecha">
+            <div class="date-warning" id="date-warning">Esta fecha ya pasó. Al guardar, el portal mostrará el evento como culminado.</div>
+          </div>
+          <div class="form-group">
+            <label>Cupos</label>
+            <input type="text" id="ev-cupos" placeholder="Ej: 250 o Sin límite">
+          </div>
+          <div class="form-group">
+            <label>Mostrar en página principal</label>
+            <select id="ev-destacado">
+              <option value="true">Sí, mostrar en portada</option>
+              <option value="false">No mostrar en portada</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Prioridad en portada</label>
+            <input type="number" id="ev-prioridad" min="1" max="99" placeholder="1 = más importante">
+          </div>
+          <div class="form-group full">
+            <label>Lugar *</label>
+            <input type="text" id="ev-lugar" placeholder="Ej: Auditorio UTP Ica">
+          </div>
+          <div class="form-group full">
+            <label>Descripción *</label>
+            <textarea id="ev-desc" placeholder="Describe el evento..."></textarea>
+          </div>
+          <div class="form-group full">
+            <label>URL de imagen</label>
+            <input type="text" id="ev-img" placeholder="https://... o img/nombre.png">
+            <div style="margin-top:10px;">
+              <div class="img-preview-box" onclick="document.getElementById('ev-img').focus()" id="img-preview-box">
+                <div class="placeholder">🖼️</div>
+                <p>Vista previa de imagen</p>
+              </div>
+            </div>
+          </div>
+          <div class="form-group full">
+            <label>Vista previa en el portal</label>
+            <div id="event-live-preview" class="event-preview-card"></div>
+          </div>
+        </div>
+        <div class="form-actions">
+          <button class="btn btn-red" onclick="saveEvento()">💾 Guardar evento</button>
+          <button class="btn btn-ghost" onclick="closeModal()">Cancelar</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL VER INSCRIPCIÓN -->
+  <div class="modal-overlay" id="modal-insc">
+    <div class="modal">
+      <div class="modal-header">
+        <span class="modal-title">📋 Detalle de inscripción</span>
+        <button class="modal-close" onclick="document.getElementById('modal-insc').classList.remove('open')">✕</button>
+      </div>
+      <div class="modal-body" id="modal-insc-body"></div>
+    </div>
+  </div>
+
+  <!-- TOAST -->
+  <div class="toast" id="toast"></div>
+
+  <script>
+  /* =============================================
+     ADMIN DASHBOARD — UTP ICA 2026
+     Gestión completa via localStorage
+  ============================================= */
+
+  // Guard de sesión
+  let isAdminSession = false;
+  try {
+    isAdminSession = sessionStorage.getItem('utp_admin') === 'true';
+  } catch(e) {
+    isAdminSession = false;
+  }
+  if (!isAdminSession) window.location.href = 'login.html';
+
+  const UTP_APP_VERSION = '2026-07-22.4';
+  try {
+    const currentVersion = localStorage.getItem('utp_app_version');
+    if (currentVersion !== UTP_APP_VERSION) {
+      localStorage.setItem('utp_app_version', UTP_APP_VERSION);
+    }
+  } catch(e) {}
+
+  /* --- DATOS POR DEFECTO --- */
+  const DEFAULT_EVENTS = [
+    { titulo:'Congreso de Ingeniería y Tecnología 2026', cat:'academic', fecha:'2026-11-05', lugar:'Auditorio UTP Ica', cupos:'250', estado:'open', desc:'Investigaciones, workshops y paneles con expertos del sector tecnológico nacional e internacional.', img:'../img/academico1.png', destacado:true, prioridad:1 },
+    { titulo:'Feria de Arte y Expresión Universitaria', cat:'cultural', fecha:'2026-11-12', lugar:'Patio Central UTP', cupos:'Sin límite', estado:'open', desc:'Exposiciones, performances y talleres creativos a cargo de estudiantes de todas las carreras UTP.', img:'../img/cultural1.png', destacado:true, prioridad:2 },
+    { titulo:'Olimpiadas Interfacultades UTP 2026', cat:'sport', fecha:'2026-11-19', lugar:'Cancha UTP Ica', cupos:'120', estado:'full', desc:'Fútbol, baloncesto y atletismo entre las distintas carreras. ¡Demuestra el espíritu UTP!', img:'../img/deportivo1.png', destacado:true, prioridad:3 },
+    { titulo:'Semana de Orientación Vocacional UTP', cat:'academic', fecha:'2026-11-26', lugar:'Aulas UTP Ica', cupos:'400', estado:'open', desc:'Charlas y visitas a laboratorios para ingresantes. Conoce tu carrera de la mano de docentes expertos.', img:'../img/academico.png', destacado:true, prioridad:4 },
+    { titulo:'Festival de Cine Universitario', cat:'cultural', fecha:'2026-12-02', lugar:'Auditorio UTP Ica', cupos:'180', estado:'open', desc:'Cortometrajes y proyecciones especiales realizados por estudiantes y cineastas invitados a Ica.', img:'../img/cultural.png', destacado:true, prioridad:5 },
+    { titulo:'Torneo de Videojuegos UTP 2026', cat:'other', fecha:'2026-12-09', lugar:'Laboratorio de Cómputo UTP Ica', cupos:'120', estado:'open', desc:'Competencia gamer con retos por equipos, partidas clasificatorias y premiación para la comunidad universitaria.', img:'https://images.unsplash.com/photo-1542751371-adc38448a05e?w=700&q=80', destacado:true, prioridad:6 },
+  ];
+
+  function normalizeDisplayPriorities(events) {
+    const normalized = events.map((ev, index) => ({
+      ...migrateLegacyEvent(ev),
+      destacado: ev.destacado !== false,
+      prioridad: Number(ev.prioridad || index + 1)
+    }));
+
+    const used = new Set();
+    normalized
+      .map((ev, index) => ({ ev, index }))
+      .filter(item => item.ev.destacado)
+      .sort((a, b) => a.ev.prioridad - b.ev.prioridad || a.index - b.index)
+      .forEach(item => {
+        let next = item.ev.prioridad;
+        while (used.has(next)) next += 1;
+        item.ev.prioridad = next;
+        used.add(next);
+      });
+
+    return normalized;
+  }
+
+  function migrateLegacyEvent(ev) {
+    const title = (ev.titulo || '').toLowerCase();
+    const desc = (ev.desc || '').toLowerCase();
+    const isOldMarathon = title.includes('maratón') || title.includes('maraton') || desc.includes('carrera solidaria');
+    if (!isOldMarathon) return ev;
+
+    return {
+      ...ev,
+      titulo:'Torneo de Videojuegos UTP 2026',
+      cat:'other',
+      lugar:'Laboratorio de Cómputo UTP Ica',
+      cupos:'120',
+      estado: ev.estado || 'open',
+      desc:'Competencia gamer con retos por equipos, partidas clasificatorias y premiación para la comunidad universitaria.',
+      img:'https://images.unsplash.com/photo-1542751371-adc38448a05e?w=700&q=80'
+    };
+  }
+
+  function loadEvents()   {
+    try {
+      const events = JSON.parse(localStorage.getItem('utp_events') || JSON.stringify(DEFAULT_EVENTS));
+      return normalizeDisplayPriorities(Array.isArray(events) ? events : DEFAULT_EVENTS);
+    } catch(e) {
+      return normalizeDisplayPriorities(DEFAULT_EVENTS);
+    }
+  }
+  function saveEvents(ev) { localStorage.setItem('utp_events', JSON.stringify(ev)); }
+  function syncNormalizedEvents() { saveEvents(loadEvents()); }
+  function loadInsc() {
+    try {
+      const data = JSON.parse(localStorage.getItem('utp_inscripciones') || '[]');
+      return Array.isArray(data) ? data : [];
+    } catch(e) {
+      return [];
+    }
+  }
+
+  const DEFAULT_CONFIG = {
+    nombre: 'Portal de Eventos - UTP Sede Ica',
+    ano: '2026',
+    email: 'eventos.ica@utp.edu.pe',
+    tel: '(0801) 19610',
+    wa: '960 252 970',
+    dir: 'Av. Ayabaca s/n, Ica',
+    fb: 'https://www.facebook.com/UTP.Peru',
+    ig: 'https://www.instagram.com/universidadutp',
+  };
+
+  function loadConfig() {
+    try {
+      const stored = JSON.parse(localStorage.getItem('utp_config') || '{}');
+      return { ...DEFAULT_CONFIG, ...(stored && typeof stored === 'object' ? stored : {}) };
+    } catch(e) {
+      return { ...DEFAULT_CONFIG };
+    }
+  }
+
+  function populateConfigForm() {
+    const cfg = loadConfig();
+    document.getElementById('cfg-nombre').value = cfg.nombre || DEFAULT_CONFIG.nombre;
+    document.getElementById('cfg-ano').value = cfg.ano || DEFAULT_CONFIG.ano;
+    document.getElementById('cfg-email').value = cfg.email || DEFAULT_CONFIG.email;
+    document.getElementById('cfg-tel').value = cfg.tel || DEFAULT_CONFIG.tel;
+    document.getElementById('cfg-wa').value = cfg.wa || DEFAULT_CONFIG.wa;
+    document.getElementById('cfg-dir').value = cfg.dir || DEFAULT_CONFIG.dir;
+    document.getElementById('cfg-fb').value = cfg.fb || DEFAULT_CONFIG.fb;
+    document.getElementById('cfg-ig').value = cfg.ig || DEFAULT_CONFIG.ig;
+    document.getElementById('cfg-pass').value = '';
+  }
+
+  function applyAdminConfig() {
+    const cfg = loadConfig();
+    const yearText = cfg.ano || DEFAULT_CONFIG.ano;
+    const subtitle = document.querySelector('.s-brand-text p');
+    if (subtitle) subtitle.textContent = `Portal de Eventos ${yearText}`;
+    document.getElementById('topbar-title')?.setAttribute('title', cfg.nombre);
+  }
+
+  const DEFAULT_CATEGORIES = [
+    { id:'academic', label:'Académico', icon:'🎓', locked:true },
+    { id:'cultural', label:'Cultural', icon:'🎨', locked:true },
+    { id:'sport', label:'Deportivo', icon:'⚽', locked:true },
+    { id:'other', label:'Otros', icon:'✦', locked:true },
+  ];
+  let CAT_LABEL = {};
+  let CAT_BADGE = {};
+
+  function slugCategoryName(name) {
+    return name
+      .trim()
+      .toLowerCase()
+      .normalize('NFD').replace(/[\u0300-\u036f]/g, '')
+      .replace(/[^a-z0-9]+/g, '-')
+      .replace(/^-+|-+$/g, '') || 'categoria';
+  }
+
+  function loadCategories() {
+    let stored = [];
+    let deleted = [];
+    try {
+      stored = JSON.parse(localStorage.getItem('utp_categories') || '[]');
+    } catch(e) {
+      stored = [];
+    }
+    try {
+      deleted = JSON.parse(localStorage.getItem('utp_deleted_categories') || '[]');
+    } catch(e) {
+      deleted = [];
+    }
+    if (!Array.isArray(stored)) stored = [];
+    if (!Array.isArray(deleted)) deleted = [];
+    const deletedSet = new Set(deleted);
+    const merged = DEFAULT_CATEGORIES.filter(cat => !deletedSet.has(cat.id));
+    stored.forEach(cat => {
+      if (cat?.id && cat?.label && !deletedSet.has(cat.id) && !merged.some(base => base.id === cat.id)) merged.push(cat);
+    });
+    return merged;
+  }
+
+  function saveCategories(categories) {
+    const custom = categories.filter(cat => !cat.locked);
+    localStorage.setItem('utp_categories', JSON.stringify(custom));
+  }
+
+  function saveDeletedBaseCategories(ids) {
+    const validIds = ids.filter(id => DEFAULT_CATEGORIES.some(cat => cat.id === id));
+    localStorage.setItem('utp_deleted_categories', JSON.stringify([...new Set(validIds)]));
+  }
+
+  function refreshCategoryMaps() {
+    const categories = loadCategories();
+    CAT_LABEL = Object.fromEntries(categories.map(cat => [cat.id, cat.label]));
+    CAT_BADGE = Object.fromEntries(categories.map(cat => [
+      cat.id,
+      cat.id === 'academic' ? 'badge-blue' : cat.id === 'cultural' ? 'badge-purple' : cat.id === 'sport' ? 'badge-green' : 'badge-gray'
+    ]));
+  }
+
+  function populateCategorySelect(selected = 'academic') {
+    const select = document.getElementById('ev-cat');
+    if (!select) return;
+    select.innerHTML = loadCategories()
+      .map(cat => `<option value="${cat.id}">${cat.icon || '•'} ${cat.label}</option>`)
+      .join('');
+    select.value = CAT_LABEL[selected] ? selected : 'other';
+  }
+
+  function renderCategoryAdminLists() {
+    const categories = loadCategories();
+    const html = categories.length ? `
+      <table class="category-admin-table">
+        <thead>
+          <tr><th>Categoría</th><th>ID</th><th>Tipo</th><th>Acción</th></tr>
+        </thead>
+        <tbody>
+          ${categories.map(cat => `
+            <tr>
+              <td><strong>${cat.icon || '•'} ${cat.label}</strong></td>
+              <td>${cat.id}</td>
+              <td>${cat.locked ? 'Base' : 'Personalizada'}</td>
+              <td><button type="button" class="btn btn-danger btn-sm" onclick="deleteCategory('${cat.id}')">Eliminar</button></td>
+            </tr>
+          `).join('')}
+        </tbody>
+      </table>` : `<div class="category-empty">No hay categorías registradas.</div>`;
+
+    ['modal-categories-list', 'config-categories-list'].forEach(id => {
+      const box = document.getElementById(id);
+      if (box) box.innerHTML = html;
+    });
+  }
+
+  function deleteCategory(id) {
+    const category = loadCategories().find(cat => cat.id === id);
+    if (!category) return;
+
+    const inUse = loadEvents().some(ev => ev.cat === id);
+    if (inUse) {
+      showToast('No se puede eliminar: hay eventos usando esta categoría', 'error');
+      return;
+    }
+
+    const categories = loadCategories().filter(cat => cat.locked || cat.id !== id);
+    if (category.locked) {
+      let deleted = [];
+      try {
+        deleted = JSON.parse(localStorage.getItem('utp_deleted_categories') || '[]');
+      } catch(e) {
+        deleted = [];
+      }
+      saveDeletedBaseCategories([...(Array.isArray(deleted) ? deleted : []), id]);
+    }
+    saveCategories(categories);
+    refreshCategoryMaps();
+    populateCategorySelect(document.getElementById('ev-cat')?.value || 'academic');
+    renderCategoryAdminLists();
+    renderEventos();
+    renderDashboard();
+    showToast('Categoría eliminada', 'success');
+  }
+
+  function addCategoryFromModal() {
+    const input = document.getElementById('new-cat-name');
+    const name = input.value.trim();
+    if (!name) { showToast('❌ Escribe el nombre de la categoría', 'error'); return; }
+
+    const categories = loadCategories();
+    let id = slugCategoryName(name);
+    let suffix = 2;
+    while (categories.some(cat => cat.id === id)) {
+      id = `${slugCategoryName(name)}-${suffix++}`;
+    }
+
+    categories.push({ id, label:name, icon:'•', locked:false });
+    saveCategories(categories);
+    refreshCategoryMaps();
+    populateCategorySelect(id);
+    input.value = '';
+    renderCategoryAdminLists();
+    renderEventos();
+    renderDashboard();
+    updateEventFormHelpers();
+    showToast('✅ Categoría agregada');
+  }
+
+  refreshCategoryMaps();
+  const EST_LABEL = { open:'Abierto', full:'Casi lleno', closed:'Cerrado', ended:'Culminado' };
+  const EST_BADGE = { open:'badge-green', full:'badge-yellow', closed:'badge-gray', ended:'badge-gray' };
+  const MONTHS_ES = ['Ene','Feb','Mar','Abr','May','Jun','Jul','Ago','Sep','Oct','Nov','Dic'];
+
+  function isPastEventDate(fecha) {
+    if (!fecha) return false;
+    return new Date(fecha + 'T23:59:59') < new Date();
+  }
+
+  function getEffectiveEventStatus(ev) {
+    if (isPastEventDate(ev?.fecha)) return 'ended';
+    return ev?.estado || 'open';
+  }
+
+  function getEventRegistrations(title) {
+    return loadInsc().filter(item => item.evento === title).length;
+  }
+
+  function getCapacityInfo(ev) {
+    const limit = parseInt(String(ev.cupos || '').replace(/\D/g, ''), 10);
+    const used = getEventRegistrations(ev.titulo);
+    if (!Number.isFinite(limit) || limit <= 0) {
+      return { used, limit: null, percent: 0, label: `${used} inscritos / Sin límite` };
+    }
+    const percent = Math.min(100, Math.round((used / limit) * 100));
+    return { used, limit, percent, label: `${used}/${limit} inscritos` };
+  }
+
+  function renderCapacityMeter(ev) {
+    const cap = getCapacityInfo(ev);
+    const width = cap.limit ? cap.percent : 100;
+    const modifier = cap.limit && cap.percent >= 85 ? ' capacity-meter--hot' : '';
+    return `
+      <div class="capacity-meter${modifier}">
+        <div class="capacity-meter__top"><span>Cupos</span><strong>${cap.label}</strong></div>
+        <div class="capacity-meter__track"><span style="width:${width}%"></span></div>
+      </div>`;
+  }
+
+  function getFormEventDraft() {
+    return {
+      titulo: document.getElementById('ev-titulo')?.value.trim() || 'Título del evento',
+      cat: document.getElementById('ev-cat')?.value || 'academic',
+      fecha: document.getElementById('ev-fecha')?.value || '',
+      lugar: document.getElementById('ev-lugar')?.value.trim() || 'Lugar del evento',
+      cupos: document.getElementById('ev-cupos')?.value || 'Sin límite',
+      estado: document.getElementById('ev-estado')?.value || 'open',
+      desc: document.getElementById('ev-desc')?.value.trim() || 'Descripción breve del evento para la vista previa.',
+      img: document.getElementById('ev-img')?.value || 'https://images.unsplash.com/photo-1540575467063-178a50c2df87?w=600&q=80'
+    };
+  }
+
+  function updateDateWarning() {
+    const warning = document.getElementById('date-warning');
+    const fecha = document.getElementById('ev-fecha')?.value;
+    if (warning) warning.classList.toggle('visible', isPastEventDate(fecha));
+  }
+
+  function updateEventPreview() {
+    const box = document.getElementById('event-live-preview');
+    if (!box) return;
+    const ev = getFormEventDraft();
+    const status = getEffectiveEventStatus(ev);
+    box.innerHTML = `
+      <img src="${ev.img}" alt="${ev.titulo}" onerror="this.style.background='var(--border)'">
+      <div class="event-preview-body">
+        <div>
+          <span class="badge ${CAT_BADGE[ev.cat] || 'badge-gray'}">${CAT_LABEL[ev.cat] || ev.cat}</span>
+          <span class="badge ${EST_BADGE[status] || 'badge-gray'}">${EST_LABEL[status] || status}</span>
+        </div>
+        <div class="event-preview-title">${ev.titulo}</div>
+        <div class="event-preview-desc">${ev.desc}</div>
+        <div class="event-preview-meta">
+          <span>Fecha: ${ev.fecha ? formatDate(ev.fecha) : 'Sin fecha'}</span>
+          <span>Lugar: ${ev.lugar}</span>
+        </div>
+        ${renderCapacityMeter(ev)}
+      </div>`;
+  }
+
+  function updateEventFormHelpers() {
+    updateDateWarning();
+    updateEventPreview();
+  }
+
+  /* --- NAVEGACIÓN --- */
+  function showPanel(name, source = null) {
+    document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+    document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+    const panel = document.getElementById('panel-'+name);
+    if (!panel) return;
+    panel.classList.add('active');
+    const navSource = source || [...document.querySelectorAll('.nav-item')]
+      .find(item => (item.getAttribute('onclick') || '').includes(`showPanel('${name}')`));
+    navSource?.classList.add('active');
+    const titles = { dashboard:'Dashboard', eventos:'Gestión de Eventos', inscripciones:'Inscripciones', galeria:'Galería / Imágenes', configuracion:'Configuración' };
+    document.getElementById('topbar-title').textContent = titles[name] || name;
+
+    if (name === 'dashboard')      renderDashboard();
+    if (name === 'eventos')        renderEventos();
+    if (name === 'inscripciones')  renderInscripciones();
+    if (name === 'galeria')        renderGaleria();
+    if (name === 'configuracion') {
+      populateConfigForm();
+      renderCategoryAdminLists();
+    }
+
+    // Cerrar sidebar en móvil
+    document.getElementById('sidebar')?.classList.remove('open');
+  }
+
+  /* --- MENÚ MÓVIL --- */
+  document.getElementById('menu-toggle')?.addEventListener('click', () => {
+    document.getElementById('sidebar')?.classList.toggle('open');
+  });
+
+  /* --- DASHBOARD --- */
+  function renderDashboard() {
+    const evs = loadEvents();
+    const ins = loadInsc();
+    document.getElementById('dash-total').textContent = evs.length;
+    document.getElementById('dash-inscripciones').textContent = ins.length;
+    document.getElementById('dash-academic').textContent = evs.filter(e=>e.cat==='academic').length;
+    document.getElementById('dash-otros').textContent = evs.filter(e=>e.cat!=='academic').length;
+    document.getElementById('badge-eventos').textContent = evs.length;
+    document.getElementById('badge-inscripciones').textContent = ins.length;
+
+    const list = document.getElementById('dash-eventos-list');
+    list.innerHTML = evs.map((ev,i) => `
+      <div class="event-mini-card">
+        <img class="event-mini-img" src="${ev.img}" alt="${ev.titulo}" onerror="this.style.background='var(--border)'">
+        <div class="event-mini-info">
+          <div class="event-mini-title">${ev.titulo}</div>
+          <div class="event-mini-meta">
+            <span class="badge ${CAT_BADGE[ev.cat] || 'badge-gray'}">${CAT_LABEL[ev.cat] || ev.cat}</span>
+            &nbsp;📅 ${formatDate(ev.fecha)} &nbsp; 📍 ${ev.lugar}
+          </div>
+        </div>
+        <div class="event-mini-actions">
+          <button class="btn btn-ghost btn-sm" onclick="showPanel('eventos');setTimeout(()=>editEvento(${i}),100)">✏️</button>
+          <button class="btn btn-danger btn-sm" onclick="deleteEvento(${i})">🗑️</button>
+        </div>
+      </div>
+    `).join('');
+  }
+
+  /* --- EVENTOS --- */
+  function renderEventos() {
+    const evs = loadEvents();
+    const tbody = document.getElementById('eventos-tbody');
+    tbody.innerHTML = evs.map((ev, i) => {
+      const status = getEffectiveEventStatus(ev);
+      return `
+        <tr>
+          <td data-label="Imagen"><img src="${ev.img}" alt="${ev.titulo}" style="width:52px;height:40px;object-fit:cover;border-radius:6px;" onerror="this.style.background='var(--border)'"></td>
+          <td data-label="Evento"><strong>${ev.titulo}</strong></td>
+          <td data-label="Categoría"><span class="badge ${CAT_BADGE[ev.cat] || 'badge-gray'}">${CAT_LABEL[ev.cat] || ev.cat}</span></td>
+          <td data-label="Fecha">${formatDate(ev.fecha)}</td>
+          <td data-label="Lugar">${ev.lugar}</td>
+          <td data-label="Cupos">${renderCapacityMeter(ev)}</td>
+          <td data-label="Portada">${ev.destacado ? `<span class="badge badge-red">Prioridad ${ev.prioridad || '-'}</span>` : '<span class="badge badge-gray">No</span>'}</td>
+          <td data-label="Estado"><span class="badge ${EST_BADGE[status] || 'badge-gray'}">${EST_LABEL[status] || status}</span></td>
+          <td data-label="Acciones">
+            <div style="display:flex;gap:6px;">
+              <button class="btn btn-ghost btn-sm" onclick="editEvento(${i})">✏️ Editar</button>
+              <button class="btn btn-danger btn-sm" onclick="deleteEvento(${i})">🗑️</button>
+            </div>
+          </td>
+        </tr>`;
+    }).join('') || '<tr><td colspan="9" style="text-align:center;color:var(--muted);padding:32px;">No hay eventos. ¡Crea el primero!</td></tr>';
+  }
+
+  /* --- MODAL EVENTO --- */
+  let editingIndex = -1;
+
+  function openModal(idx = -1) {
+    editingIndex = idx;
+    document.getElementById('modal-title').textContent = idx >= 0 ? '✏️ Editar Evento' : '➕ Nuevo Evento';
+    if (idx >= 0) {
+      const ev = loadEvents()[idx];
+      populateCategorySelect(ev.cat);
+      document.getElementById('ev-titulo').value = ev.titulo;
+      document.getElementById('ev-cat').value    = ev.cat;
+      document.getElementById('ev-fecha').value  = ev.fecha;
+      document.getElementById('ev-lugar').value  = ev.lugar;
+      document.getElementById('ev-cupos').value  = ev.cupos;
+      document.getElementById('ev-destacado').value = ev.destacado ? 'true' : 'false';
+      document.getElementById('ev-prioridad').value = ev.prioridad || '';
+      document.getElementById('ev-estado').value = ev.estado;
+      document.getElementById('ev-desc').value   = ev.desc;
+      document.getElementById('ev-img').value    = ev.img;
+      updateImgPreview(ev.img);
+    } else {
+      populateCategorySelect('academic');
+      document.getElementById('ev-titulo').value = '';
+      document.getElementById('ev-cat').value    = 'academic';
+      document.getElementById('ev-fecha').value  = '';
+      document.getElementById('ev-lugar').value  = '';
+      document.getElementById('ev-cupos').value  = '';
+      document.getElementById('ev-destacado').value = 'true';
+      document.getElementById('ev-prioridad').value = '';
+      document.getElementById('ev-estado').value = 'open';
+      document.getElementById('ev-desc').value   = '';
+      document.getElementById('ev-img').value    = '';
+      updateImgPreview('');
+    }
+    document.getElementById('new-cat-name').value = '';
+    renderCategoryAdminLists();
+    updateEventFormHelpers();
+    document.getElementById('modal-overlay').classList.add('open');
+  }
+
+  function closeModal() { document.getElementById('modal-overlay').classList.remove('open'); }
+
+  document.getElementById('ev-img').addEventListener('input', e => {
+    updateImgPreview(e.target.value);
+    updateEventFormHelpers();
+  });
+
+  ['ev-titulo','ev-cat','ev-fecha','ev-lugar','ev-cupos','ev-destacado','ev-prioridad','ev-estado','ev-desc'].forEach(id => {
+    document.getElementById(id)?.addEventListener('input', updateEventFormHelpers);
+    document.getElementById(id)?.addEventListener('change', updateEventFormHelpers);
+  });
+
+  function updateImgPreview(src) {
+    const box = document.getElementById('img-preview-box');
+    if (src) {
+      box.innerHTML = `<img src="${src}" alt="Vista previa de imagen" onerror="this.parentElement.innerHTML='<div class=placeholder>❌</div><p>Imagen no encontrada</p>'">`;
+    } else {
+      box.innerHTML = '<div class="placeholder">🖼️</div><p>Vista previa de imagen</p>';
+    }
+  }
+
+  function normalizePriorities(evs, targetIndex) {
+    const target = evs[targetIndex];
+    if (!target?.destacado) return;
+
+    target.prioridad = Number(target.prioridad) || 99;
+    const taken = new Set([target.prioridad]);
+    evs
+      .map((ev, index) => ({ ev, index }))
+      .filter(item => item.index !== targetIndex && item.ev.destacado)
+      .sort((a, b) => Number(a.ev.prioridad || 99) - Number(b.ev.prioridad || 99) || a.index - b.index)
+      .forEach(item => {
+        let next = Number(item.ev.prioridad || 99);
+        while (taken.has(next)) next += 1;
+        item.ev.prioridad = next;
+        taken.add(next);
+      });
+  }
+
+  function saveEvento() {
+    const titulo = document.getElementById('ev-titulo').value.trim();
+    const fecha  = document.getElementById('ev-fecha').value;
+    const lugar  = document.getElementById('ev-lugar').value.trim();
+    const desc   = document.getElementById('ev-desc').value.trim();
+    if (!titulo || !fecha || !lugar || !desc) { showToast('❌ Completa los campos obligatorios', 'error'); return; }
+
+    const ev = {
+      titulo, fecha, lugar, desc,
+      cat:    document.getElementById('ev-cat').value,
+      cupos:  document.getElementById('ev-cupos').value || 'Sin límite',
+      destacado: document.getElementById('ev-destacado').value === 'true',
+      prioridad: Number(document.getElementById('ev-prioridad').value) || 99,
+      estado: document.getElementById('ev-estado').value,
+      img:    document.getElementById('ev-img').value || 'https://images.unsplash.com/photo-1540575467063-178a50c2df87?w=600&q=80',
+    };
+
+    const evs = loadEvents();
+    let savedIndex = editingIndex;
+    if (editingIndex >= 0) { evs[editingIndex] = ev; }
+    else { evs.push(ev); savedIndex = evs.length - 1; }
+    normalizePriorities(evs, savedIndex);
+    saveEvents(evs);
+    closeModal();
+    renderEventos();
+    renderDashboard();
+    showToast(isPastEventDate(fecha) ? '✅ Evento guardado como culminado por fecha' : (editingIndex >= 0 ? '✅ Evento actualizado' : '✅ Evento creado exitosamente'), 'success');
+  }
+
+  function editEvento(i) { openModal(i); }
+
+  function deleteEvento(i) {
+    if (!confirm('¿Eliminar este evento? Esta acción no se puede deshacer.')) return;
+    const evs = loadEvents();
+    evs.splice(i, 1);
+    saveEvents(evs);
+    renderEventos();
+    renderDashboard();
+    showToast('🗑️ Evento eliminado', 'success');
+  }
+
+  /* --- INSCRIPCIONES --- */
+  function renderInscripciones() {
+    const ins = loadInsc();
+    const empty = document.getElementById('inscripciones-empty');
+    const wrap  = document.getElementById('inscripciones-table-wrap');
+    document.getElementById('badge-inscripciones').textContent = ins.length;
+
+    if (!ins.length) { empty.style.display='block'; wrap.style.display='none'; return; }
+    empty.style.display = 'none'; wrap.style.display = 'block';
+
+    document.getElementById('inscripciones-tbody').innerHTML = ins.map((r,i) => `
+      <tr>
+        <td data-label="#">${i+1}</td>
+        <td data-label="Nombre"><strong>${r.nombre} ${r.apellido}</strong></td>
+        <td data-label="Correo">${r.email}</td>
+        <td data-label="Código">${r.codigo}</td>
+        <td data-label="Facultad">${r.facultad}</td>
+        <td data-label="Ciclo">${r.ciclo}</td>
+        <td data-label="Evento">${r.evento}</td>
+        <td data-label="Fecha reg.">${r.fecha || '—'}</td>
+        <td data-label="Acción">
+          <div style="display:flex;gap:6px;">
+            <button class="btn btn-ghost btn-sm" onclick="verInscripcion(${i})">👁️ Ver</button>
+            <button class="btn btn-danger btn-sm" onclick="deleteInsc(${i})">🗑️</button>
+          </div>
+        </td>
+      </tr>
+    `).join('');
+  }
+
+  function verInscripcion(i) {
+    const r = loadInsc()[i];
+    document.getElementById('modal-insc-body').innerHTML = `
+      <div class="insc-detail">
+        <div class="insc-field"><label>Nombre</label><span>${r.nombre} ${r.apellido}</span></div>
+        <div class="insc-field"><label>Correo</label><span>${r.email}</span></div>
+        <div class="insc-field"><label>Código</label><span>${r.codigo}</span></div>
+        <div class="insc-field"><label>Facultad</label><span>${r.facultad}</span></div>
+        <div class="insc-field"><label>Ciclo</label><span>${r.ciclo}</span></div>
+        <div class="insc-field"><label>Evento</label><span>${r.evento}</span></div>
+        <div class="insc-field full" style="grid-column:1/-1"><label>Comentarios</label><span>${r.comentarios||'—'}</span></div>
+        <div class="insc-field"><label>Fecha de registro</label><span>${r.fecha||'—'}</span></div>
+      </div>
+    `;
+    document.getElementById('modal-insc').classList.add('open');
+  }
+
+  function deleteInsc(i) {
+    if (!confirm('¿Eliminar esta inscripción?')) return;
+    const ins = loadInsc(); ins.splice(i,1);
+    localStorage.setItem('utp_inscripciones', JSON.stringify(ins));
+    renderInscripciones();
+    showToast('🗑️ Inscripción eliminada', 'success');
+  }
+
+  function clearInscripciones() {
+    if (!confirm('¿Eliminar TODAS las inscripciones? Esta acción no se puede deshacer.')) return;
+    localStorage.removeItem('utp_inscripciones');
+    renderInscripciones();
+    showToast('🗑️ Inscripciones eliminadas', 'success');
+  }
+
+  /* --- GALERÍA --- */
+  function renderGaleria() {
+    const evs = loadEvents();
+    const grid = document.getElementById('galeria-grid');
+    grid.innerHTML = evs.map((ev,i) => `
+      <div style="border-radius:var(--r);overflow:hidden;border:1px solid var(--border);box-shadow:var(--sh);">
+        <div style="height:140px;overflow:hidden;position:relative;">
+          <img src="${ev.img}" alt="${ev.titulo}" style="width:100%;height:100%;object-fit:cover;" onerror="this.style.background='var(--border)'">
+          <div style="position:absolute;inset:0;background:rgba(0,0,0,0.4);opacity:0;transition:opacity 0.2s;display:flex;align-items:center;justify-content:center;"
+               onmouseenter="this.style.opacity=1" onmouseleave="this.style.opacity=0">
+            <button class="btn btn-white" style="font-size:0.75rem;padding:7px 14px;" onclick="changeImg(${i})">🔄 Cambiar</button>
+          </div>
+        </div>
+        <div style="padding:10px 12px;">
+          <p style="font-size:0.78rem;font-weight:700;color:var(--text);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${ev.titulo}</p>
+          <p style="font-size:0.68rem;color:var(--muted);margin-top:2px;">${ev.img.substring(0,35)}…</p>
+        </div>
+      </div>
+    `).join('');
+  }
+
+  function changeImg(i) {
+    const evs = loadEvents();
+    const nueva = prompt(`Nueva URL de imagen para:\n"${evs[i].titulo}"`, evs[i].img);
+    if (nueva === null) return;
+    evs[i].img = nueva.trim() || evs[i].img;
+    saveEvents(evs);
+    renderGaleria();
+    showToast('✅ Imagen actualizada', 'success');
+  }
+
+  /* --- CONFIGURACIÓN --- */
+  function saveConfig() {
+    const email = document.getElementById('cfg-email').value.trim();
+    const year = document.getElementById('cfg-ano').value.trim();
+    if (!document.getElementById('cfg-nombre').value.trim()) {
+      showToast('Escribe el nombre del portal', 'error');
+      return;
+    }
+    if (!/^\d{4}$/.test(year)) {
+      showToast('El año debe tener 4 dígitos', 'error');
+      return;
+    }
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+      showToast('Ingresa un correo válido', 'error');
+      return;
+    }
+
+    const previous = loadConfig();
+    const cfg = {
+      nombre: document.getElementById('cfg-nombre').value.trim(),
+      ano:    year,
+      email,
+      tel:    document.getElementById('cfg-tel').value.trim(),
+      wa:     document.getElementById('cfg-wa').value.trim(),
+      dir:    document.getElementById('cfg-dir').value.trim(),
+      fb:     document.getElementById('cfg-fb').value.trim(),
+      ig:     document.getElementById('cfg-ig').value.trim(),
+    };
+    if (previous.pass) cfg.pass = previous.pass;
+    const pass = document.getElementById('cfg-pass').value.trim();
+    if (pass) cfg.pass = pass;
+    localStorage.setItem('utp_config', JSON.stringify(cfg));
+    document.getElementById('cfg-pass').value = '';
+    applyAdminConfig();
+    showToast('✅ Configuración guardada. Actualiza el portal para ver los cambios.', 'success');
+  }
+
+  function resetConfig() {
+    if (!confirm('¿Restablecer la configuración por defecto?')) return;
+    localStorage.removeItem('utp_config');
+    populateConfigForm();
+    applyAdminConfig();
+    showToast('Configuración restablecida', 'success');
+  }
+
+  /* --- UTILIDADES --- */
+  function formatDate(str) {
+    if (!str) return '—';
+    const d = new Date(str + 'T00:00:00');
+    return `${d.getDate()} ${MONTHS_ES[d.getMonth()]} ${d.getFullYear()}`;
+  }
+
+  function showToast(msg, type = 'success') {
+    const t = document.getElementById('toast');
+    t.textContent = msg; t.className = `toast ${type}`;
+    setTimeout(() => t.classList.add('show'), 10);
+    setTimeout(() => t.classList.remove('show'), 3000);
+  }
+
+  function logout() {
+    try { sessionStorage.removeItem('utp_admin'); } catch(e) {}
+    window.location.href = 'login.html';
+  }
+
+  // Cerrar modal al hacer clic fuera
+  document.getElementById('modal-overlay').addEventListener('click', e => { if(e.target===e.currentTarget) closeModal(); });
+  document.getElementById('modal-insc').addEventListener('click', e => { if(e.target===e.currentTarget) e.currentTarget.classList.remove('open'); });
+
+  // Init
+  syncNormalizedEvents();
+  applyAdminConfig();
+  populateConfigForm();
+  renderCategoryAdminLists();
+  renderDashboard();
+  </script>
+</body>
+</html>
